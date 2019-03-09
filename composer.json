@@ -1,0 +1,15 @@
+{
+    "name": "mplexus/stoa",
+    "description": "Demo web application for selling stuff",
+    "type": "project",
+    "require": {
+        "doctrine/dbal": "^2.9"
+    },
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "ΜΙΧΑΛΗΣ ΠΛΕΞΟΥΣΑΚΗΣ",
+            "email": "mike.plexousakis@gmail.com"
+        }
+    ]
+}
