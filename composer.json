@@ -3,7 +3,11 @@
     "description": "Demo web application for selling stuff",
     "type": "project",
     "require": {
-        "doctrine/dbal": "^2.9"
+        "doctrine/orm": "^2.6.2",
+        "vlucas/phpdotenv": "~2.4.0"
+    },
+    "autoload": {
+        "psr-0": {"Stoa\\": "src/"}
     },
     "license": "GPL",
     "authors": [
