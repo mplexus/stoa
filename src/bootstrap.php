@@ -3,7 +3,7 @@ use Dotenv\Dotenv;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
-require_once "../vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 if (false == $env = getenv('app_env')) {
     $dotenv = new Dotenv('.');

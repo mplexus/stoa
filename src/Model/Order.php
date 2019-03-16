@@ -2,8 +2,10 @@
 
 namespace Stoa\Model;
 
+use DateTime;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @Entity
@@ -22,7 +24,7 @@ class Order
     protected $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @Column(type="datetime", name="purchase_date")
      */
@@ -125,7 +127,7 @@ class Order
     /**
      * Get purchaseDate.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getPurchaseDate()
     {
@@ -135,7 +137,7 @@ class Order
     /**
      * Set purchaseDate.
      *
-     * @param \DateTime $purchaseDate
+     * @param DateTime $purchaseDate
      *
      * @return Order
      */
@@ -156,6 +158,7 @@ class Order
     public function addOrderItem(OrderItem $orderItem)
     {
         $this->orderItems[] = $orderItem;
+        $orderItem->setOrder($this);
 
         return $this;
     }
@@ -175,7 +178,7 @@ class Order
     /**
      * Get orderItems.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getOrderItems()
     {

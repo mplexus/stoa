@@ -1,8 +1,9 @@
 <?php
 
-use \Doctrine\Common\Collections\ArrayCollection;
-
 namespace Stoa\Model;
+
+use \Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\Common\Collections\Collection;
 
 /**
  * @Entity @Table(name="customers")
@@ -138,13 +139,14 @@ class Customer
     /**
      * Add order.
      *
-     * @param \Stoa\Model\Order $order
+     * @param Order $order
      *
      * @return Customer
      */
-    public function addOrder(\Stoa\Model\Order $order)
+    public function addOrder(Order $order)
     {
         $this->orders[] = $order;
+        $order->setCustomer($this);
 
         return $this;
     }
@@ -152,11 +154,11 @@ class Customer
     /**
      * Remove order.
      *
-     * @param \Stoa\Model\Order $order
+     * @param Order $order
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeOrder(\Stoa\Model\Order $order)
+    public function removeOrder(Order $order)
     {
         return $this->orders->removeElement($order);
     }
@@ -164,7 +166,7 @@ class Customer
     /**
      * Get orders.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getOrders()
     {
