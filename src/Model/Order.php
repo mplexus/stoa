@@ -50,6 +50,13 @@ class Order
     protected $orderItems;
 
     /**
+    * @var Customer
+    *
+    * @ManyToOne(targetEntity="Customer", inversedBy="orders")
+    */
+    protected $customer;
+
+    /**
     * Initializes collections
     */
     public function __construct()
@@ -173,5 +180,29 @@ class Order
     public function getOrderItems()
     {
         return $this->orderItems;
+    }
+
+    /**
+     * Set customer.
+     *
+     * @param Customer|null $customer
+     *
+     * @return Order
+     */
+    public function setCustomer(Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer.
+     *
+     * @return Customer|null
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
     }
 }

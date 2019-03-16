@@ -1,5 +1,7 @@
 <?php
 
+use \Doctrine\Common\Collections\ArrayCollection;
+
 namespace Stoa\Model;
 
 /**
@@ -35,6 +37,21 @@ class Customer
      * @Column(type="string")
      */
     protected $email;
+
+    /**
+    * @var Order[]
+    *
+    * @OneToMany(targetEntity="Order", mappedBy="customer")
+    */
+    protected $orders;
+
+    /**
+    * Initializes collections
+    */
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -116,5 +133,41 @@ class Customer
         $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * Add order.
+     *
+     * @param \Stoa\Model\Order $order
+     *
+     * @return Customer
+     */
+    public function addOrder(\Stoa\Model\Order $order)
+    {
+        $this->orders[] = $order;
+
+        return $this;
+    }
+
+    /**
+     * Remove order.
+     *
+     * @param \Stoa\Model\Order $order
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeOrder(\Stoa\Model\Order $order)
+    {
+        return $this->orders->removeElement($order);
+    }
+
+    /**
+     * Get orders.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrders()
+    {
+        return $this->orders;
     }
 }
