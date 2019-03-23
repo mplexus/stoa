@@ -113,6 +113,16 @@ class Customer
     }
 
     /**
+     * Get firstName and lastName.
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    /**
      * Get email.
      *
      * @return string

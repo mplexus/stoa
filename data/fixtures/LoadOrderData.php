@@ -24,8 +24,8 @@ class LoadData implements FixtureInterface
         $customers = [];
         for ($i = 0; $i <= 3; $i++) {
             $customer = new Customer();
-            $customer->setFirstName($this->generateRandomString(5))
-                ->setLastName($this->generateRandomString(5))
+            $customer->setFirstName($this->generateRandomString(5, false))
+                ->setLastName($this->generateRandomString(5, false))
                 ->setEmail($customer->getFirstName() . '.' . $customer->getLastName(). "@mail.com")
                 ;
             $manager->persist($customer);
