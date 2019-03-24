@@ -1,10 +1,11 @@
 <?php
 
-use strict;
+declare(strict_types = 1);
 
 namespace Stoa\Controller;
 
 use Stoa\Service\Index as IndexService;
+use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends AbstractController
 {
@@ -18,14 +19,12 @@ class IndexController extends AbstractController
         return $this->service;
     }
 
-    public function listAction()
+    public function listAction(Request $request)
     {
         $service = $this->getService();
 
-        $queryData = $this->getRequest()->getQuery();
+        $queryData = $request->query;
 
-        $this->view->filters    = $filters;
-        $this->view->filterForm = $form;
         $this->view->totals     = $service->getTotals();
         $this->view->companies  = $service->listCompanies(
             $this->getPaginatorParams(),

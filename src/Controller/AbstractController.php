@@ -30,13 +30,9 @@ abstract class AbstractController
     public function invoke()
 	{
         $routes = new RouteCollection();
-        $routes->add('hello', new Route('/hello/{name}', [
-            '_controller' => function (Request $request) {
-                return new Response(
-                    sprintf("Hello %s", $request->get('name'))
-                );
-            }]
-        ));
+        $routes->add('index_list', new Route('/stats', [
+            '_controller' => [IndexController::class, 'listAction']
+        ]));
 
         $request = Request::createFromGlobals();
 
