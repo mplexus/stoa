@@ -32,4 +32,4 @@ $isDevMode = getenv('app_debug');
 $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Model"), $isDevMode);
 
 // obtaining the entity manager
-$entityManager = EntityManager::create($conn, $config);
+//$entityManager = EntityManager::create($conn, $config);
