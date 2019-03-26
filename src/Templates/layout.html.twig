@@ -16,8 +16,8 @@
         <div id="loader"></div>
     </div>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+        <div class="row" style="display:block;">
+            <div class="col-sm-12 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
                     {% for item in menu%}
                     <li {% if item.active %} class="active" {% endif %}>
@@ -27,7 +27,7 @@
                 </ul>
             </div>
 
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="col-sm-12 col-sm-offset-12 col-md-10 col-md-offset-2 main" style="float:right;">
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
                     {% for alertType, alerts in app.session.flashbag.all %}
@@ -41,10 +41,10 @@
                         {% endfor %}
                     {% endfor %}
                     {% if env == 'development' %}
-                    <div id="demo-data" class="text-center">
+                    <div class="text-center">
                         <span class="alert alert-warning">Test Environment</span>
                     </div>
-                    {% endif%}
+                    {% endif %}
                     {% block content %}{% endblock %}
                     </div>
                 </div>

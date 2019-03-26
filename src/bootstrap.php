@@ -3,6 +3,7 @@
 use Dotenv\Dotenv;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use \Whoops\Handler\PrettyPageHandler;
 use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 use Twig\Environment as TwigEnvironment;
 
@@ -53,10 +54,10 @@ $bootstrap['twig'] = new TwigEnvironment($loader, [
 
 $whoops = new \Whoops\Run;
 if ($env !== 'production') {
-    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+    $whoops->pushHandler(new PrettyPageHandler());
 } else {
     $whoops->pushHandler(function($e){
-        echo 'Todo: Friendly error page and send an email to the developer';
+        echo 'Oops! Something went wrong. Please contact site administrator.';
     });
 }
 $whoops->register();

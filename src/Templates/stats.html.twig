@@ -1,7 +1,9 @@
 {% extends "layout.html.twig" %}
 
-{% block title %}{% endblock %}
-
 {% block content %}
-    {% include "total_orders.html.twig" %}
+    <div class="row">
+        <div class="col-sm-3">
+            {% include "total_orders.html.twig" %}
+        </div>
+    </div>
 {% endblock %}

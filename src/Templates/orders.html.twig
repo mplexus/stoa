@@ -1,0 +1,35 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="container p-5">
+  <h3>List of Orders</h3>
+  <div class="card">
+    {% if orders is not empty %}
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>ID</th>
+          <th>Purchased At</th>
+          <th>Customer</th>
+          <th>Country</th>
+          <th>Items</th>
+        </tr>
+      </thead>
+        {% for order in orders %}
+      <tr>
+        <td>
+          <a href="items.php?id={{ order.id }}">{{ order.id }}</a>
+        </td>
+        <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
+        <td>{{ order.customer.fullName }}</td>
+        <td>{{ order.country }}</td>
+        <td>{{ order.orderItems|length }}</td>
+      </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+      <p>No orders, for now!</p>
+    {% endif %}
+  </div>
+</div>
+ {% endblock %}

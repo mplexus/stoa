@@ -18,4 +18,12 @@ class Order extends Base
 
         return count($orders);
     }
+
+    public function findAll()
+    {
+        $entityManager = $this->getEntityManager();
+        $orders = $entityManager->getRepository('Stoa\Model\Order')->findAll();
+
+        return $orders;
+    }
 }
