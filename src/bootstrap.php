@@ -49,7 +49,7 @@ $bootstrap['entity_manager'] = $entityManager;
 
 $loader = new TwigFilesystemLoader(__DIR__ . '/Templates');
 $bootstrap['twig'] = new TwigEnvironment($loader, [
-    'cacde' => __DIR__ . '../var/cache'
+    'cache' => __DIR__ . '/../var/cache'
 ]);
 
 $whoops = new \Whoops\Run;
