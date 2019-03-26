@@ -5,11 +5,12 @@ declare(strict_types = 1);
 namespace Stoa\Core;
 
 use Stoa\Core\Router;
+use Stoa\Core\Application;
+use Stoa\Core\ControllerResolver;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -19,12 +20,16 @@ class Dispatcher
 {
     private $router;
 
-    function __construct(Router $router) {
+    private $app;
+
+    function __construct(Application $app, Router $router)
+    {
         $this->router = $router;
+        $this->app = $app;
     }
 
-    public function dispatch() {
-
+    public function dispatch()
+    {
         $routes = $this->router->getRoutes();
 
         $request = Request::createFromGlobals();
@@ -34,7 +39,7 @@ class Dispatcher
         $dispatcher = new EventDispatcher();
         $dispatcher->addSubscriber(new RouterListener($matcher, new RequestStack()));
 
-        $controllerResolver = new ControllerResolver();
+        $controllerResolver = new ControllerResolver($this->app);
         $argumentResolver = new ArgumentResolver();
 
         $kernel = new HttpKernel($dispatcher, $controllerResolver, new RequestStack(), $argumentResolver);

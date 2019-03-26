@@ -2,6 +2,8 @@
 
 namespace Stoa\Controller;
 
+use Stoa\Core\Application;
+
 abstract class AbstractController
 {
     /**
@@ -19,14 +21,22 @@ abstract class AbstractController
      */
     const ITEM_COUNT_PER_PAGE = 10;
 
+    protected $app;
+
     abstract protected function getService();
+
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * Return the paginator params for the list action.
      *
      * @return array
      */
-    protected function getPaginatorParams() {
+    protected function getPaginatorParams()
+    {
         $params = array();
         $range  = $this->getParam('range', static::PAGE_RANGE);
         $count  = $this->getParam('count', static::ITEM_COUNT_PER_PAGE);

@@ -2,7 +2,6 @@
 
 use Dotenv\Dotenv;
 use Doctrine\ORM\Tools\Setup;
-use Stoa\Core\Application;
 use Doctrine\ORM\EntityManager;
 
 require_once __DIR__ . "/../vendor/autoload.php";
@@ -38,11 +37,8 @@ $isDevMode = getenv('app_debug');
 $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Model"), $isDevMode);
 $bootstrap['config'] = $config;
 
-//$app = new Application($bootstrap);
-
-// obtaining the entity manager
 $entityManager = EntityManager::create($conn, $config);
-$bootstrap['entityManager'] = $entityManager;
+$bootstrap['entity-manager'] = $entityManager;
 
 $whoops = new \Whoops\Run;
 if ($env !== 'production') {

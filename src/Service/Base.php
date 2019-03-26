@@ -11,12 +11,13 @@ abstract class Base
      */
     protected $entityManager = null;
 
+    public function __construct(EntityManager $em)
+    {
+        $this->entityManager = $em;
+    }
+
     public function getEntityManager()
     {
-        if ($this->entityManager === null) {
-            $this->entityManager = EntityManager::create($conn, $config);
-        }
-
         return $this->entityManager;
     }
 }

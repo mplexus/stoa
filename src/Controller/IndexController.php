@@ -4,20 +4,22 @@ declare(strict_types = 1);
 
 namespace Stoa\Controller;
 
+use Stoa\Core\Application;
 use Stoa\Service\Order as OrderService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends AbstractController
 {
     private $orderService;
 
-    public function __construct() {
-        
+    public function __construct(Application $app) {
+        parent::__construct($app);
     }
 
     protected function getService(){
         if ($this->orderService == null) {
-            $this->orderService = new OrderService();
+            $this->orderService = new OrderService($this->app->getEntityManager());
         }
 
         return $this->orderService;
@@ -30,9 +32,7 @@ class IndexController extends AbstractController
         $queryData = $request->query;
 
         $this->totals  = $orderService->getTotals();
-        //$this->view->orders  = $service->listCompanies(
-        //    $this->getPaginatorParams(),
-            //$queryData
-        //);
+
+        return new Response($this->totals);
     }
 }
