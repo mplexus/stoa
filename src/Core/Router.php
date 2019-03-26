@@ -20,8 +20,12 @@ class Router
     }
 
     private function setRoutes() {
-        $this->routes->add('index_list', new Route('/stats', [
-            '_controller' => [IndexController::class, 'listAction']
+        $this->routes->add('stats', new Route('/stats', [
+            '_controller' => [IndexController::class, 'statsAction']
+        ]));
+
+        $this->routes->add('index', new Route('/', [
+            '_controller' => [IndexController::class, 'indexAction']
         ]));
     }
 

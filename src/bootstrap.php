@@ -3,12 +3,14 @@
 use Dotenv\Dotenv;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
+use Twig\Environment as TwigEnvironment;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-error_reporting(E_ALL);
-
 $bootstrap = array();
+
+$bootstrap['name'] = 'Stoa';
 
 $appPath = __DIR__ . '/../';
 
@@ -16,6 +18,10 @@ if (false == $env = getenv('app_env')) {
     $dotenv = new Dotenv($appPath);
     $dotenv->load();
     $env = getenv('app_env');
+}
+$bootstrap['env'] = $env;
+if ($env == 'development') {
+    error_reporting(E_ALL);
 }
 
 // database configuration parameters
@@ -34,11 +40,16 @@ $conn = array(
 $bootstrap['connection'] = $conn;
 
 $isDevMode = getenv('app_debug');
-$config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Model"), $isDevMode);
+$config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . "/Model"), $isDevMode);
 $bootstrap['config'] = $config;
 
 $entityManager = EntityManager::create($conn, $config);
-$bootstrap['entity-manager'] = $entityManager;
+$bootstrap['entity_manager'] = $entityManager;
+
+$loader = new TwigFilesystemLoader(__DIR__ . '/Templates');
+$bootstrap['twig'] = new TwigEnvironment($loader, [
+    'cacde' => __DIR__ . '../var/cache'
+]);
 
 $whoops = new \Whoops\Run;
 if ($env !== 'production') {

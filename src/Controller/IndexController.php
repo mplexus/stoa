@@ -13,26 +13,40 @@ class IndexController extends AbstractController
 {
     private $orderService;
 
-    public function __construct(Application $app) {
+    protected $title;
+
+    public function __construct(Application $app)
+    {
+        $this->title = 'Dashboard';
         parent::__construct($app);
     }
 
-    protected function getService(){
+    protected function getService()
+    {
         if ($this->orderService == null) {
-            $this->orderService = new OrderService($this->app->getEntityManager());
+            $this->orderService = new OrderService($this->app->entityManager);
         }
 
         return $this->orderService;
     }
 
-    public function listAction(Request $request)
+    public function statsAction(Request $request)
     {
         $orderService = $this->getService();
+        $params = array();
+
+        $params['request_uri'] = $request->getRequestUri();
 
         $queryData = $request->query;
 
-        $this->totals  = $orderService->getTotals();
+        $totals  = $orderService->getTotals();
+        $params['total_orders'] = $totals;
 
-        return new Response($this->totals);
+        return $this->render('stats', $params);
+    }
+
+    public function indexAction(Request $request)
+    {
+        return $this->render('index');
     }
 }

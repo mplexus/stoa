@@ -3,6 +3,7 @@
 namespace Stoa\Controller;
 
 use Stoa\Core\Application;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractController
 {
@@ -46,5 +47,40 @@ abstract class AbstractController
         $params['itemCountPerPage']  = $count;
 
         return $params;
+    }
+
+    protected function render($template, array $params = [], int $status = 200)
+    {
+        $template = $template . '.html.twig';
+        $requestUri = $params['request_uri'] ?? '';
+        $params = array_merge(
+            [
+                'menu' => [
+                    'Dashboard' => [
+                        'url' => '/stats',
+                        'label' => 'Dashboard',
+                        'active' => $requestUri === '/stats',
+                        'icon' => 'tags',
+                    ],
+                    'Orders' => [
+                        'url' => '/orders',
+                        'label' => 'Orders',
+                        'active' => $requestUri === '/orders',
+                        'icon' => 'list-alt',
+                    ]
+                ]
+            ],
+            [
+                'env' => $this->app->env
+            ],
+            [
+                'name' => $this->app->name,
+                'title' => $this->app->name . '::' . $this->title,
+            ],
+            $params
+        );
+        $content = $this->app->twig->render($template, $params);
+
+        return new Response($content, $status);
     }
 }
