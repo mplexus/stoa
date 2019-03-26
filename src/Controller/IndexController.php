@@ -4,31 +4,35 @@ declare(strict_types = 1);
 
 namespace Stoa\Controller;
 
-use Stoa\Service\Index as IndexService;
+use Stoa\Service\Order as OrderService;
 use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends AbstractController
 {
-    private $service;
+    private $orderService;
+
+    public function __construct() {
+        
+    }
 
     protected function getService(){
-        if ($this->service == null) {
-            $this->service = new IndexService();
+        if ($this->orderService == null) {
+            $this->orderService = new OrderService();
         }
 
-        return $this->service;
+        return $this->orderService;
     }
 
     public function listAction(Request $request)
     {
-        $service = $this->getService();
+        $orderService = $this->getService();
 
         $queryData = $request->query;
 
-        $this->view->totals     = $service->getTotals();
-        $this->view->companies  = $service->listCompanies(
-            $this->getPaginatorParams(),
-            $filters
-        );
+        $this->totals  = $orderService->getTotals();
+        //$this->view->orders  = $service->listCompanies(
+        //    $this->getPaginatorParams(),
+            //$queryData
+        //);
     }
 }

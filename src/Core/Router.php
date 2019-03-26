@@ -2,40 +2,30 @@
 
 namespace Stoa\Core;
 
-use Symfony\Component\HttpFoundation\Request;
+use Stoa\Controller\IndexController;
+use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Route;
 
-class Router {
+class Router
+{
 
-    private $routes = [
-        'get' => [],
-        'post' => []
-    ];
+    private $routes = null;
 
-    function get($pattern, callable $handler) {
-        $this->routes['get'][$pattern] = $handler;
-        return $this;
-    }
+    public function __construct() {
+        if ($this->routes == null) {
+            $this->routes = new RouteCollection();
 
-    function post($pattern, callable $handler) {
-        $this->routes['post'][$pattern] = $handler;
-        return $this;
-    }
-
-    function match(Request $request) {
-        $method = strtolower($request->getMethod());
-        if (!isset($this->routes[$method])) {
-            return false;
+            $this->setRoutes();
         }
-
-        $path = $request->getPathInfo();
-        $path = trim($path, '/');
-        foreach ($this->routes[$method] as $pattern => $handler) {
-            if ($pattern === $path) {
-                return $handler;
-            }
-        }
-
-        return false;
     }
 
+    private function setRoutes() {
+        $this->routes->add('index_list', new Route('/stats', [
+            '_controller' => [IndexController::class, 'listAction']
+        ]));
+    }
+
+    public function getRoutes() {
+        return $this->routes;
+    }
 }

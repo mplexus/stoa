@@ -2,9 +2,14 @@
 
 use Dotenv\Dotenv;
 use Doctrine\ORM\Tools\Setup;
+use Stoa\Core\Application;
 use Doctrine\ORM\EntityManager;
 
 require_once __DIR__ . "/../vendor/autoload.php";
+
+error_reporting(E_ALL);
+
+$bootstrap = array();
 
 $appPath = __DIR__ . '/../';
 
@@ -27,9 +32,24 @@ $conn = array(
         1002 => 'SET NAMES utf8'
     )
 );
+$bootstrap['connection'] = $conn;
 
 $isDevMode = getenv('app_debug');
 $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Model"), $isDevMode);
+$bootstrap['config'] = $config;
+
+//$app = new Application($bootstrap);
 
 // obtaining the entity manager
-//$entityManager = EntityManager::create($conn, $config);
+$entityManager = EntityManager::create($conn, $config);
+$bootstrap['entityManager'] = $entityManager;
+
+$whoops = new \Whoops\Run;
+if ($env !== 'production') {
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+} else {
+    $whoops->pushHandler(function($e){
+        echo 'Todo: Friendly error page and send an email to the developer';
+    });
+}
+$whoops->register();

@@ -2,53 +2,39 @@
 
 namespace Stoa\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
-use Symfony\Component\HttpKernel\EventListener\RouterListener;
-use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-
 abstract class AbstractController
 {
+    /**
+     * Default number of local pages (i.e., the number of discretes
+     * page numbers that will be displayed, including the current
+     * page number)
+     *
+     * @var int
+     */
+    const PAGE_RANGE          = 10;
+
+    /**
+     * Default item count per page.
+     * @var int
+     */
+    const ITEM_COUNT_PER_PAGE = 10;
+
     abstract protected function getService();
 
-    public function indexAction(Request $request, $resource)
-    {
-        $criteria = $request->query->all();
-        $payload = $this->getService($resource)->collection($criteria);
+    /**
+     * Return the paginator params for the list action.
+     *
+     * @return array
+     */
+    protected function getPaginatorParams() {
+        $params = array();
+        $range  = $this->getParam('range', static::PAGE_RANGE);
+        $count  = $this->getParam('count', static::ITEM_COUNT_PER_PAGE);
 
-        return $this->invoke($payload, $request);
+        $params['pageRange']         = $range;
+        $params['currentPageNumber'] = $this->getParam('page', 1);
+        $params['itemCountPerPage']  = $count;
+
+        return $params;
     }
-
-    public function invoke()
-	{
-        $routes = new RouteCollection();
-        $routes->add('index_list', new Route('/stats', [
-            '_controller' => [IndexController::class, 'listAction']
-        ]));
-
-        $request = Request::createFromGlobals();
-
-        $matcher = new UrlMatcher($routes, new RequestContext());
-
-        $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new RouterListener($matcher, new RequestStack()));
-
-        $controllerResolver = new ControllerResolver();
-        $argumentResolver = new ArgumentResolver();
-
-        $kernel = new HttpKernel($dispatcher, $controllerResolver, new RequestStack(), $argumentResolver);
-
-        $response = $kernel->handle($request);
-        $response->send();
-
-        $kernel->terminate($request, $response);
-	}
 }

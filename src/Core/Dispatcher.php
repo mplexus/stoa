@@ -1,32 +1,47 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Core;
 
-use Stoa\Controller\IndexController;
+use Stoa\Core\Router;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\HttpKernel\EventListener\RouterListener;
+use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
 
 class Dispatcher
 {
-    public static function dispatch()
-    {
-        $url = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
+    private $router;
 
-        array_shift($url);
+    function __construct(Router $router) {
+        $this->router = $router;
+    }
 
-        // get controller name
-        $controller = !empty($url[0]) ? $url[0] . 'Controller' : 'IndexController';
+    public function dispatch() {
 
-        // get method name of controller
-        $method = !empty($url[1]) ? $url[1] : 'index';
+        $routes = $this->router->getRoutes();
 
-        // get argument passed in to the method
-        $arg = !empty($url[2]) ? $url[2] : NULL;
+        $request = Request::createFromGlobals();
 
-        // create controller instance and call the specified method
-        $file = $controller . '.php';
-        require_once('Stoa/Controller/' . $file);
-        unset($file);
-        $cont = new $controller;
+        $matcher = new UrlMatcher($routes, new RequestContext());
 
-        $cont->$method($arg);
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addSubscriber(new RouterListener($matcher, new RequestStack()));
+
+        $controllerResolver = new ControllerResolver();
+        $argumentResolver = new ArgumentResolver();
+
+        $kernel = new HttpKernel($dispatcher, $controllerResolver, new RequestStack(), $argumentResolver);
+
+        $response = $kernel->handle($request);
+        $response->send();
+
+        $kernel->terminate($request, $response);
     }
 }
