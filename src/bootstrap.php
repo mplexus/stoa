@@ -21,8 +21,10 @@ if (false == $env = getenv('app_env')) {
     $env = getenv('app_env');
 }
 $bootstrap['env'] = $env;
+
 if ($env == 'development') {
     error_reporting(E_ALL);
+    $disableCache = true;
 }
 
 // database configuration parameters
@@ -49,7 +51,7 @@ $bootstrap['entity_manager'] = $entityManager;
 
 $loader = new TwigFilesystemLoader(__DIR__ . '/Templates');
 $bootstrap['twig'] = new TwigEnvironment($loader, [
-    'cache' => __DIR__ . '/../var/cache'
+    'cache' => (isset($disableCache) ? false : __DIR__ . '/../var/cache')
 ]);
 
 $whoops = new \Whoops\Run;

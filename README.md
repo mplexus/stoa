@@ -22,4 +22,8 @@ php bin/load-fixtures.php
 
 ## Run
 
-Simply point your web server to web/index.php.
+Simply point your web server to web/index.php or use php's built-in web server:
+
+```php
+php -S localhost:8000 -t web
+```
