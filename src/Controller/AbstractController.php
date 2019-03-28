@@ -24,7 +24,7 @@ abstract class AbstractController
 
     protected $app;
 
-    abstract protected function getService();
+    //abstract protected function getService();
 
     public function __construct(Application $app)
     {

@@ -6,12 +6,15 @@ namespace Stoa\Controller;
 
 use Stoa\Core\Application;
 use Stoa\Service\Order as OrderService;
+use Stoa\Service\Customer as CustomerService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends AbstractController
 {
     private $orderService;
+
+    private $customerService;
 
     protected $title;
 
@@ -21,7 +24,7 @@ class IndexController extends AbstractController
         parent::__construct($app);
     }
 
-    protected function getService()
+    protected function getOrderService()
     {
         if ($this->orderService == null) {
             $this->orderService = new OrderService($this->app->entityManager);
@@ -30,17 +33,30 @@ class IndexController extends AbstractController
         return $this->orderService;
     }
 
+    protected function getCustomerService()
+    {
+        if ($this->customerService == null) {
+            $this->customerService = new CustomerService($this->app->entityManager);
+        }
+
+        return $this->customerService;
+    }
+
     public function statsAction(Request $request)
     {
-        $orderService = $this->getService();
+        $orderService = $this->getOrderService();
+        $customerService = $this->getCustomerService();
         $params = array();
 
         $params['request_uri'] = $request->getRequestUri();
 
         $queryData = $request->query;
 
-        $totals  = $orderService->getTotals();
-        $params['total_orders'] = $totals;
+        $totalOrders  = $orderService->getTotals();
+        $params['total_orders'] = $totalOrders;
+
+        $totalCustomers = $customerService->getTotals();
+        $params['total_customers'] = $totalCustomers;
 
         return $this->render('stats', $params);
     }
