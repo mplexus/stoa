@@ -1,31 +1,36 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-<div class="container p-5">
-  <h3>List of Customers</h3>
-  <div class="card">
-    {% if customers is not empty %}
-    <table class="table">
-      <thead class="thead-light">
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Orders</th>
-        </tr>
-      </thead>
-        {% for customer in customers %}
-      <tr>
-        <td>{{ customer.id }}</td>
-        <td>{{ customer.fullName }}</td>
-        <td>{{ customer.email }}</td>
-        <td>{{ customer.orders|length }}</td>
-      </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-      <p>No customers, for now!</p>
-    {% endif %}
-  </div>
+<div class="container-fluid">
+    <div class="card bg-light border-0">
+        <h3 class="card-title">Customers</h3>
+    </div>
+    <div class="card-body">
+        <h5>List of Customers</h5>
+        <div class="card">
+        {% if customers is not empty %}
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Orders</th>
+                    </tr>
+                </thead>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.fullName }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.orders|length }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No customers, for now!</p>
+        {% endif %}
+        </div>
+    </div>
 </div>
  {% endblock %}

@@ -1,35 +1,70 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-<div class="container p-5">
-  <h3>List of Orders</h3>
-  <div class="card">
-    {% if orders is not empty %}
-    <table class="table">
-      <thead class="thead-light">
-        <tr>
-          <th>ID</th>
-          <th>Purchased At</th>
-          <th>Customer</th>
-          <th>Country</th>
-          <th>Items</th>
-        </tr>
-      </thead>
-        {% for order in orders %}
-      <tr>
-        <td>
-          <a href="orders/{{ order.id }}">{{ order.id }}</a>
-        </td>
-        <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
-        <td>{{ order.customer.fullName }}</td>
-        <td>{{ order.country }}</td>
-        <td>{{ order.orderItems|length }}</td>
-      </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-      <p>No orders, for now!</p>
-    {% endif %}
-  </div>
+<div class="container-fluid">
+    <div class="card bg-light border-0">
+        <h3 class="card-title">Orders</h3>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Filters</h5>
+        <input name="daterange" type="text" />
+        <form action="orders" method="get">
+            <div class="form-group mt-2">
+                <input name="dateFrom" id="dateFrom" style="display:none;"/>
+                <input name="dateTo" id="dateTo" style="display:none;"/>
+                <button type="submit" class="btn btn-sm btn-w-m btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">List of Orders</h5>
+        <div class="card">
+        {% if orders is not empty %}
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Purchased At</th>
+                        <th>Customer</th>
+                        <th>Country</th>
+                        <th>Items</th>
+                    </tr>
+                </thead>
+                {% for order in orders %}
+                <tr>
+                    <td><a href="orders/{{ order.id }}">{{ order.id }}</a></td>
+                    <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
+                    <td>{{ order.customer.fullName }}</td>
+                    <td>{{ order.country }}</td>
+                    <td>{{ order.orderItems|length }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No orders, for now!</p>
+        {% endif %}
+        </div>
+    </div>
 </div>
  {% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="/js/moment.js"></script>
+<script type="text/javascript" src="/js/daterangepicker.js"></script>
+<script type="text/javascript" src="/js/daterangepicker-options.js"></script>
+<script type="text/javascript">
+$('input[name="daterange"]').daterangepicker(daterangepickerOptions,
+    function(start, end, label) {
+        $("#dateFrom").val(start.format('YYYY-MM-DD'));
+        $("#dateTo").val(end.format('YYYY-MM-DD'));
+    }
+);
+
+$(function() {
+    //set initial values on page load
+    var picker = $('input[name="daterange"]').data('daterangepicker');
+    $("#dateFrom").val(picker.startDate.format('YYYY-MM-DD'));
+    $("#dateTo").val(picker.endDate.format('YYYY-MM-DD'));
+});
+</script>
+{% endblock %}

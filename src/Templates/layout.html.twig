@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-    <!--<link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">-->
-    <!--<link href="/css/daterangepicker.css" rel="stylesheet">-->
+    <link href="/css/daterangepicker.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/custom.css">
     <link rel="stylesheet" type="text/css" href="/css/fontawesome.min.css">
     <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
@@ -36,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-12 col-sm-offset-12 col-md-10 col-md-offset-2 main" style="float:right;">
+            <div class="col-sm-12 col-sm-offset-12 col-md-10 col-md-offset-2 main ml-0 pl-0" style="float:right;">
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
                     {% for alertType, alerts in app.session.flashbag.all %}
@@ -55,8 +54,8 @@
             </div>
         </div>
     </div>
-    <script src="/js/jquery-3.3.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     {% block javascript %}{% endblock %}
 </body>
 </html>
