@@ -30,6 +30,10 @@ class Router
             '_controller' => [OrderController::class, 'listAction']
         ]));
 
+        $this->routes->add('order', new Route('/orders/{id}', [
+            '_controller' => [OrderController::class, 'viewAction']
+        ]));
+
         $this->routes->add('customers', new Route('/customers', [
             '_controller' => [CustomerController::class, 'listAction']
         ]));

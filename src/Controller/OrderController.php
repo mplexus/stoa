@@ -39,11 +39,22 @@ class OrderController extends AbstractController
 
         $queryData = $request->query;
 
-        $orders  = $orderService->findAll();
-
-        $params['orders'] = $orders;
+        $params['orders'] = $orderService->getList();
 
         return $this->render('orders', $params);
+    }
+
+    public function viewAction(Request $request, $id)
+    {
+        $orderService = $this->getService();
+        $params = array();
+
+        $params['request_uri'] = $request->getRequestUri();
+
+        $params['order'] = $orderService->getItem($id);
+        $params['revenue'] = $orderService->getRevenue($id);
+
+        return $this->render('order_details', $params);
     }
 
 }

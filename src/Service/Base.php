@@ -11,6 +11,8 @@ abstract class Base
      */
     protected $entityManager = null;
 
+    abstract function getResource();
+
     public function __construct(EntityManager $em)
     {
         $this->entityManager = $em;
@@ -19,5 +21,17 @@ abstract class Base
     public function getEntityManager()
     {
         return $this->entityManager;
+    }
+
+    public function getItem($id)
+    {
+        $criteria = ['id' => $id];
+
+        return $this->entityManager->getRepository($this->getResource())->findOneById($criteria);
+    }
+
+    public function getList()
+    {
+        return $this->entityManager->getRepository($this->getResource())->findAll();
     }
 }

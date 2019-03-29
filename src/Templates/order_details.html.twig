@@ -2,9 +2,8 @@
 
 {% block content %}
 <div class="container p-5">
-  <h3>List of Orders</h3>
+  <h3>Order {{order.id}}</h3>
   <div class="card">
-    {% if orders is not empty %}
     <table class="table">
       <thead class="thead-light">
         <tr>
@@ -13,23 +12,25 @@
           <th>Customer</th>
           <th>Country</th>
           <th>Items</th>
+          <th>Revenue</th>
         </tr>
       </thead>
-        {% for order in orders %}
+
       <tr>
-        <td>
-          <a href="orders/{{ order.id }}">{{ order.id }}</a>
-        </td>
+        <td>{{ order.id }}</td>
         <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
         <td>{{ order.customer.fullName }}</td>
         <td>{{ order.country }}</td>
         <td>{{ order.orderItems|length }}</td>
+        <td>{{ revenue|number_format(2) }} EUR</td>
       </tr>
-        {% endfor %}
+
     </table>
-    {% else %}
-      <p>No orders, for now!</p>
-    {% endif %}
+
+  </div>
+
+  <div class="mt-5">
+      <a href="/orders">Back</a>
   </div>
 </div>
  {% endblock %}

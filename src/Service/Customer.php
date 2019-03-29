@@ -3,6 +3,7 @@
 namespace Stoa\Service;
 
 use Doctrine\ORM\EntityManager;
+use Stoa\Model\Customer as CustomerModel;
 
 class Customer extends Base
 {
@@ -14,16 +15,13 @@ class Customer extends Base
     public function getTotals()
     {
         $entityManager = $this->getEntityManager();
-        $customers = $entityManager->getRepository('Stoa\Model\Customer')->findAll();
+        $customers = $entityManager->getRepository($this->getResource())->findAll();
 
         return count($customers);
     }
 
-    public function findAll()
+    public function getResource()
     {
-        $entityManager = $this->getEntityManager();
-        $customers = $entityManager->getRepository('Stoa\Model\Customer')->findAll();
-
-        return $customers;
+        return CustomerModel::class;
     }
 }

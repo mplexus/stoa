@@ -32,16 +32,14 @@ class CustomerController extends AbstractController
 
     public function listAction(Request $request)
     {
-        $orderService = $this->getService();
+        $service = $this->getService();
         $params = array();
 
         $params['request_uri'] = $request->getRequestUri();
 
         $queryData = $request->query;
 
-        $customers  = $orderService->findAll();
-
-        $params['customers'] = $customers;
+        $params['customers'] = $service->getList();
 
         return $this->render('customers', $params);
     }

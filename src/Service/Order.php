@@ -2,7 +2,9 @@
 
 namespace Stoa\Service;
 
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\EntityManager;
+use Stoa\Model\Order as OrderModel;
 
 class Order extends Base
 {
@@ -11,19 +13,47 @@ class Order extends Base
         parent::__construct($em);
     }
 
-    public function getTotals()
+    public function getTotalNumber()
     {
         $entityManager = $this->getEntityManager();
-        $orders = $entityManager->getRepository('Stoa\Model\Order')->findAll();
+        $orders = $entityManager->getRepository($this->getResource())->findAll();
 
         return count($orders);
     }
 
-    public function findAll()
+    public function getRevenue($orderId = null)
     {
         $entityManager = $this->getEntityManager();
-        $orders = $entityManager->getRepository('Stoa\Model\Order')->findAll();
+        $queryBuilder = $entityManager->getRepository($this->getResource())->createQueryBuilder('o');
 
-        return $orders;
+        $queryBuilder->select('SUM(i.price) as revenue')
+            ->leftJoin('o.orderItems', 'i', Expr\Join::WITH)
+            ;
+
+        if ($orderId) {
+            $queryBuilder->where('o.id = :order_id')
+            ->setParameter('order_id', $orderId)
+            ;
+        }
+
+        return $queryBuilder->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
+
+    public function getTotalRevenue()
+    {
+        $entityManager = $this->getEntityManager();
+        $queryBuilder = $entityManager->getRepository('Stoa\Model\OrderItem')->createQueryBuilder('i');
+
+        return $queryBuilder->select('SUM(i.price) as revenue')
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
+
+    public function getResource()
+    {
+        return OrderModel::class;
     }
 }
