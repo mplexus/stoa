@@ -18,14 +18,22 @@
     </div>
     <div class="container-fluid">
         <div class="row" style="display:block;">
-            <div class="col-sm-12 col-md-2 sidebar">
-                <ul class="nav nav-sidebar flex-column">
+            <div class="col-sm-12 col-md-2 sidebar navbar-light bg-light">
+                <a class="navbar-brand" href="#">{{name}}</a>
+                <ul class="nav nav-sidebar flex-column justify-content-between">
                     {% for item in menu%}
                     <li {% if item.active %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
                         <a href="{{ item.url}}" class="nav-link"><span class="fa fa-{{ item.icon }}">&nbsp;</span>{{ item.label }}</a>
                     </li>
                     {% endfor%}
                 </ul>
+                <div class="navbar fixed-bottom mb-2">
+                    {% if env == 'development' %}
+                    <div class="small">
+                        <span class="alert alert-warning">Test Environment</span>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
 
             <div class="col-sm-12 col-sm-offset-12 col-md-10 col-md-offset-2 main" style="float:right;">
@@ -41,11 +49,6 @@
                             </div>
                         {% endfor %}
                     {% endfor %}
-                    {% if env == 'development' %}
-                    <div class="text-center">
-                        <span class="alert alert-warning">Test Environment</span>
-                    </div>
-                    {% endif %}
                     {% block content %}{% endblock %}
                     </div>
                 </div>
