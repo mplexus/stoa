@@ -5,29 +5,29 @@ declare(strict_types = 1);
 namespace Stoa\Controller;
 
 use Stoa\Core\Application;
-use Stoa\Service\Order as OrderService;
+use Stoa\Service\Customer as CustomerService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class OrderController extends AbstractController
+class CustomerController extends AbstractController
 {
-    private $orderService;
+    private $customerService;
 
     protected $title;
 
     public function __construct(Application $app)
     {
-        $this->title = 'Orders';
+        $this->title = 'Customers';
         parent::__construct($app);
     }
 
     protected function getService()
     {
-        if ($this->orderService == null) {
-            $this->orderService = new OrderService($this->app->entityManager);
+        if ($this->customerService == null) {
+            $this->customerService = new CustomerService($this->app->entityManager);
         }
 
-        return $this->orderService;
+        return $this->customerService;
     }
 
     public function listAction(Request $request)
@@ -39,11 +39,11 @@ class OrderController extends AbstractController
 
         $queryData = $request->query;
 
-        $orders  = $orderService->findAll();
+        $customers  = $orderService->findAll();
 
-        $params['orders'] = $orders;
+        $params['customers'] = $customers;
 
-        return $this->render('orders', $params);
+        return $this->render('customers', $params);
     }
 
 }

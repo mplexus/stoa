@@ -4,6 +4,7 @@ namespace Stoa\Core;
 
 use Stoa\Controller\IndexController;
 use Stoa\Controller\OrderController;
+use Stoa\Controller\CustomerController;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 
@@ -27,6 +28,10 @@ class Router
 
         $this->routes->add('orders', new Route('/orders', [
             '_controller' => [OrderController::class, 'listAction']
+        ]));
+
+        $this->routes->add('customers', new Route('/customers', [
+            '_controller' => [CustomerController::class, 'listAction']
         ]));
 
         $this->routes->add('index', new Route('/', [

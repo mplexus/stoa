@@ -18,7 +18,7 @@
         {% for order in orders %}
       <tr>
         <td>
-          <a href="items.php?id={{ order.id }}">{{ order.id }}</a>
+          <a href="orders?id={{ order.id }}">{{ order.id }}</a>
         </td>
         <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
         <td>{{ order.customer.fullName }}</td>

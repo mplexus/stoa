@@ -24,6 +24,12 @@ class IndexController extends AbstractController
         parent::__construct($app);
     }
 
+    protected function getService()
+    {
+        $this->getOrderService;
+        $this->getCustomerService;
+    }
+
     protected function getOrderService()
     {
         if ($this->orderService == null) {

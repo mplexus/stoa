@@ -24,7 +24,7 @@ abstract class AbstractController
 
     protected $app;
 
-    //abstract protected function getService();
+    abstract protected function getService();
 
     public function __construct(Application $app)
     {
@@ -60,13 +60,19 @@ abstract class AbstractController
                         'url' => '/stats',
                         'label' => 'Dashboard',
                         'active' => $requestUri === '/stats',
-                        'icon' => 'tags',
+                        'icon' => 'chart-bar',
                     ],
                     'Orders' => [
                         'url' => '/orders',
                         'label' => 'Orders',
                         'active' => $requestUri === '/orders',
-                        'icon' => 'list-alt',
+                        'icon' => 'dolly',
+                    ],
+                    'Customers' => [
+                        'url' => '/customers',
+                        'label' => 'Customers',
+                        'active' => $requestUri === '/customers',
+                        'icon' => 'users',
                     ]
                 ]
             ],
