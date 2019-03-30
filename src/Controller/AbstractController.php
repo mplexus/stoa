@@ -89,4 +89,11 @@ abstract class AbstractController
 
         return new Response($content, $status);
     }
+
+    public function generateFilters($data)
+    {
+        $filters = $this->getDefaultFilters();
+
+        
+    }
 }

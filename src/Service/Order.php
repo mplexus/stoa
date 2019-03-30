@@ -2,6 +2,7 @@
 
 namespace Stoa\Service;
 
+use Stoa\Query\DateBuilder;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\EntityManager;
 use Stoa\Model\Order as OrderModel;
@@ -55,5 +56,10 @@ class Order extends Base
     public function getResource()
     {
         return OrderModel::class;
+    }
+
+    public function addBuilders()
+    {
+        $this->searchEngine->add(new DateBuilder('purchaseDate'));
     }
 }
