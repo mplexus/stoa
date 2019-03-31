@@ -37,8 +37,6 @@ class CustomerController extends AbstractController
 
         $params['request_uri'] = $request->getRequestUri();
 
-        $queryData = $request->query;
-
         $params['customers'] = $service->getList();
 
         return $this->render('customers', $params);

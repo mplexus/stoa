@@ -35,7 +35,7 @@ abstract class Base
         return $this->entityManager->getRepository($this->getResource())->findOneById($criteria);
     }
 
-    public function getList(array $criteria)
+    public function getList(array $criteria = [])
     {
         return $this->searchEngine->match($criteria);
     }

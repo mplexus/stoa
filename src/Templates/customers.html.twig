@@ -18,15 +18,22 @@
                         <th>Orders</th>
                     </tr>
                 </thead>
+                <tbody>
                 {% for customer in customers %}
-                <tr>
+                  <tr>
                     <td>{{ customer.id }}</td>
                     <td>{{ customer.fullName }}</td>
                     <td>{{ customer.email }}</td>
                     <td>{{ customer.orders|length }}</td>
-                </tr>
+                  </tr>
                 {% endfor %}
+                </tbody>
             </table>
+            <div class="card-footer">
+                <span class="text-muted">
+                    Showing a total of <span class="badge badge-secondary">{{customers|length}}</span> customers
+                </span>
+            </div>
         {% else %}
             <p>No customers, for now!</p>
         {% endif %}

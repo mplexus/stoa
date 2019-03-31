@@ -53,6 +53,6 @@ class SearchEngine
             }
         }
 
-        return $queryBuilder->getQuery()->getResult(Query::HYDRATE_ARRAY);
+        return $queryBuilder->getQuery()->getResult();
     }
 }

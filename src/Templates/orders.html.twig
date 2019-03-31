@@ -34,16 +34,23 @@
                         <th>Items</th>
                     </tr>
                 </thead>
+                <tbody>
                 {% for order in orders %}
-                <tr>
+                 <tr>
                     <td><a href="orders/{{ order.id }}">{{ order.id }}</a></td>
                     <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
                     <td>{{ order.customer.fullName }}</td>
                     <td>{{ order.country }}</td>
                     <td>{{ order.orderItems|length }}</td>
-                </tr>
+                 </tr>
                 {% endfor %}
+                </tbody>
             </table>
+            <div class="card-footer">
+                <span class="text-muted">
+                    Showing a total of <span class="badge badge-secondary">{{orders|length}}</span> orders
+                </span>
+            </div>
         {% else %}
             <p>No orders found.</p>
         {% endif %}
