@@ -3,6 +3,7 @@
 namespace Stoa\Controller;
 
 use Stoa\Core\Application;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractController
@@ -90,10 +91,17 @@ abstract class AbstractController
         return new Response($content, $status);
     }
 
-    public function generateFilters($data)
+    protected function getCriteria(Request $request)
     {
-        $filters = $this->getDefaultFilters();
+        $criteria = [
+            'dateFrom' => date('Y-m-d 00:00:00', strtotime('first day of this month')),
+            'dateTo' => date('Y-m-d 23:59:59', strtotime('today')),
+        ];
 
-        
+        $criteria = array_merge($criteria, $request->query->all());
+
+        $criteria = array_filter($criteria, 'strlen');
+
+        return $criteria;
     }
 }

@@ -13,6 +13,7 @@ class SearchEngine
      */
     private $builders = [];
 
+    private $debug = false;
 
     /**
      * @var EntityRepository
@@ -22,7 +23,7 @@ class SearchEngine
     /**
      * @param QueryBuilder $queryBuilder
      */
-    public function __construct(EntityRepository $repository)
+    public function __construct(EntityRepository $repository, $debug = false)
     {
         $this->repository = $repository;
     }
@@ -53,6 +54,11 @@ class SearchEngine
             }
         }
 
-        return $queryBuilder->getQuery()->getResult();
+        if ($debug) {
+            print_r($queryBuilder->getQuery()->getDql());
+            print_r($queryBuilder->getQuery()->getParameters());
+        }
+
+        return $queryBuilder->getQuery();
     }
 }

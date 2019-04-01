@@ -16,8 +16,8 @@
         <div id="loader"></div>
     </div>
     <div class="container-fluid">
-        <div class="row" style="display:block;">
-            <div class="col-sm-12 col-md-2 sidebar navbar-light bg-light">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 sidebar navbar-light bg-light">
                 <a class="navbar-brand" href="#">{{name}}</a>
                 <ul class="nav nav-sidebar flex-column justify-content-between">
                     {% for item in menu%}
@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-12 col-sm-offset-12 col-md-10 col-md-offset-2 main ml-0 pl-0" style="float:right;">
+            <div class="col-sm-12 col-sm-offset-12 col-md-10 col-md-offset-2 main">
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
                     {% for alertType, alerts in app.session.flashbag.all %}

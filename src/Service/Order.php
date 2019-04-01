@@ -3,6 +3,7 @@
 namespace Stoa\Service;
 
 use Stoa\Query\DateBuilder;
+use Stoa\Query\OrderStatsBuilder;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\EntityManager;
 use Stoa\Model\Order as OrderModel;
@@ -14,12 +15,15 @@ class Order extends Base
         parent::__construct($em);
     }
 
-    public function getTotalNumber()
+    public function getStats(array $criteria = [])
     {
-        $entityManager = $this->getEntityManager();
-        $orders = $entityManager->getRepository($this->getResource())->findAll();
+        $this->searchEngine->add(new OrderStatsBuilder())
+            ->add(new DateBuilder('purchaseDate'))
+            ;
 
-        return count($orders);
+        $query = $this->searchEngine->match($criteria);
+
+        return $query->getScalarResult();
     }
 
     public function getRevenue($orderId = null)
@@ -58,7 +62,7 @@ class Order extends Base
         return OrderModel::class;
     }
 
-    public function addBuilders()
+    public function addListBuilders()
     {
         $this->searchEngine->add(new DateBuilder('purchaseDate'));
     }

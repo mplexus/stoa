@@ -33,11 +33,11 @@ class LoadData implements FixtureInterface
         }
 
         $orders = [];
-        for ($i = 0; $i <= self::NUMBER_OF_ORDERS; $i++) {
+        for ($i = 0; $i < self::NUMBER_OF_ORDERS; $i++) {
             $order = new Order();
             $order->setCountry($this->countries[rand(0,3)])
                 ->setDevice($this->generateRandomString())
-                ->setPurchaseDate(new \DateTime(sprintf('-%d days', self::NUMBER_OF_ORDERS - $i)))
+                ->setPurchaseDate($this->generateRandomDate())
                 ->setCustomer($customers[rand(0,2)])
                 ;
             $manager->persist($order);
@@ -67,5 +67,17 @@ class LoadData implements FixtureInterface
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    protected function generateRandomDate()
+    {
+        $min = strtotime("-1 month");
+        $max = strtotime("+1 month");
+        echo $min." - ".$max;
+        $val = rand($min, $max);
+        echo "-->".$val."\n";
+        $date = date("Y-m-d H:i:s", $val);
+        echo $date."\n";
+        return new \DateTime($date);
     }
 }

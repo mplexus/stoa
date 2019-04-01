@@ -25,7 +25,7 @@ class Customer extends Base
         return CustomerModel::class;
     }
 
-    public function addBuilders()
+    public function addListBuilders()
     {
     }
 }
