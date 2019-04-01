@@ -22,9 +22,11 @@ if (false == $env = getenv('app_env')) {
 }
 $bootstrap['env'] = $env;
 
+$isDevMode;
 if ($env == 'development') {
     error_reporting(E_ALL);
     $disableCache = true;
+    $isDevMode = true;
 }
 
 // database configuration parameters
@@ -42,7 +44,6 @@ $conn = array(
 );
 $bootstrap['connection'] = $conn;
 
-$isDevMode = getenv('app_debug');
 $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . "/Model"), $isDevMode);
 $bootstrap['config'] = $config;
 

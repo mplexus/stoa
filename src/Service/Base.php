@@ -16,10 +16,10 @@ abstract class Base
 
     abstract function getResource();
 
-    public function __construct(EntityManager $em, $debug = false)
+    public function __construct(EntityManager $em)
     {
         $this->entityManager = $em;
-        $this->searchEngine = new SearchEngine($this->entityManager->getRepository($this->getResource()), $debug);
+        $this->searchEngine = new SearchEngine($this->entityManager->getRepository($this->getResource()));
     }
 
     public function getEntityManager()

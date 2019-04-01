@@ -1,0 +1,31 @@
+<script type="text/javascript" src="/js/moment.js"></script>
+<script type="text/javascript" src="/js/daterangepicker.js"></script>
+<script type="text/javascript" src="/js/daterangepicker-options.js"></script>
+<script type="text/javascript">
+$('input[name="daterange"]').daterangepicker(daterangepickerOptions,
+    function(start, end, label) {
+        $("#dateFrom").val(start.format('YYYY-MM-DD HH:mm:ss'));
+        $("#dateTo").val(end.format('YYYY-MM-DD HH:mm:ss'));
+    }
+);
+</script>
+
+{% if criteria is not empty %}
+<script type="text/javascript">
+$(function() {
+    var picker = $('input[name="daterange"]').data('daterangepicker');
+    picker.setStartDate(moment($("#dateFrom").val()));
+    picker.setEndDate(moment($("#dateTo").val()));
+});
+</script>
+{% else %}
+<script type="text/javascript">
+$(function() {
+    var picker = $('input[name="daterange"]').data('daterangepicker');
+    picker.setStartDate(moment().startOf('month'));
+    picker.setEndDate(moment().endOf('month'));
+    $("#dateFrom").val(picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
+    $("#dateTo").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
+});
+</script>
+{% endif %}

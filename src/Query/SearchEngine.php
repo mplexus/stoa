@@ -23,9 +23,10 @@ class SearchEngine
     /**
      * @param QueryBuilder $queryBuilder
      */
-    public function __construct(EntityRepository $repository, $debug = false)
+    public function __construct(EntityRepository $repository)
     {
         $this->repository = $repository;
+        $this->debug = getenv('app_debug');
     }
 
     /**
@@ -54,7 +55,7 @@ class SearchEngine
             }
         }
 
-        if ($debug) {
+        if ($this->debug) {
             print_r($queryBuilder->getQuery()->getDql());
             print_r($queryBuilder->getQuery()->getParameters());
         }

@@ -1,6 +1,9 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
+    <div class="card-body">
+        {% include "daterangepicker.html.twig" %}
+    </div>
     <div class="row">
         <div class="col-sm-3">
             {% include "total_orders.html.twig" %}
@@ -12,4 +15,8 @@
             {% include "total_revenue.html.twig" %}
         </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+{% include "daterangepickerjs.html.twig" %}
 {% endblock %}

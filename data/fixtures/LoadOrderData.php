@@ -73,11 +73,11 @@ class LoadData implements FixtureInterface
     {
         $min = strtotime("-1 month");
         $max = strtotime("+1 month");
-        echo $min." - ".$max;
+
         $val = rand($min, $max);
-        echo "-->".$val."\n";
+
         $date = date("Y-m-d H:i:s", $val);
-        echo $date."\n";
+
         return new \DateTime($date);
     }
 }

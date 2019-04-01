@@ -7,18 +7,7 @@
     </div>
     <div class="card-body">
         <h5 class="card-title">Filters</h5>
-        <div class="row">
-            <div class="col col-lg-8 col-md-6 col-sm-12">
-                <input name="daterange" type="text" class="form-control"/>
-            </div>
-            <div class="col col-lg-2 col-md-6 col-sm-12">
-                <form action="orders" method="get" class="form-inline">
-                <input name="dateFrom" id="dateFrom" style="display:none;" value="{{criteria.dateFrom}}"/>
-                <input name="dateTo" id="dateTo" style="display:none;" value="{{criteria.dateTo}}"/>
-                <button type="submit" class="btn btn-primary ml-5 form-control form-control-sm">Search</button>
-                </form>
-            </div>
-        </div>
+        {% include "daterangepicker.html.twig" %}
     </div>
     <div class="card-body">
         <h5 class="card-title">List of Orders</h5>
@@ -60,35 +49,5 @@
 {% endblock %}
 
 {% block javascript %}
-<script type="text/javascript" src="/js/moment.js"></script>
-<script type="text/javascript" src="/js/daterangepicker.js"></script>
-<script type="text/javascript" src="/js/daterangepicker-options.js"></script>
-<script type="text/javascript">
-$('input[name="daterange"]').daterangepicker(daterangepickerOptions,
-    function(start, end, label) {
-        $("#dateFrom").val(start.format('YYYY-MM-DD HH:mm:ss'));
-        $("#dateTo").val(end.format('YYYY-MM-DD HH:mm:ss'));
-    }
-);
-</script>
-
-{% if criteria is not empty %}
-<script type="text/javascript">
-$(function() {
-    var picker = $('input[name="daterange"]').data('daterangepicker');
-    picker.setStartDate(moment($("#dateFrom").val()));
-    picker.setEndDate(moment($("#dateTo").val()));
-});
-</script>
-{% else %}
-<script type="text/javascript">
-$(function() {
-    var picker = $('input[name="daterange"]').data('daterangepicker');
-    picker.setStartDate(moment().startOf('month'));
-    picker.setEndDate(moment().endOf('month'));
-    $("#dateFrom").val(picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
-    $("#dateTo").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
-});
-</script>
-{% endif %}
+{% include "daterangepickerjs.html.twig" %}
 {% endblock %}
