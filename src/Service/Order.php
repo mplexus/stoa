@@ -4,6 +4,7 @@ namespace Stoa\Service;
 
 use Stoa\Query\DateBuilder;
 use Stoa\Query\OrderStatsBuilder;
+use Stoa\Query\CustomerStatsBuilder;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\EntityManager;
 use Stoa\Model\Order as OrderModel;
@@ -17,11 +18,24 @@ class Order extends Base
 
     public function getStats(array $criteria = [])
     {
-        $this->searchEngine->add(new OrderStatsBuilder())
+        $searchEngine = $this->getSearchEngine();
+        $searchEngine->add(new OrderStatsBuilder())
             ->add(new DateBuilder('purchaseDate'))
             ;
 
-        $query = $this->searchEngine->match($criteria);
+        $query = $searchEngine->match($criteria);
+
+        return $query->getScalarResult();
+    }
+
+    public function getCustomerStats(array $criteria = [])
+    {
+        $searchEngine = $this->getSearchEngine();
+        $searchEngine->add(new CustomerStatsBuilder())
+            ->add(new DateBuilder('purchaseDate'))
+            ;
+
+        $query = $searchEngine->match($criteria);
 
         return $query->getScalarResult();
     }

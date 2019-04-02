@@ -4,6 +4,7 @@ namespace Stoa\Query;
 
 use Stoa\Query\Builder;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 class SearchEngine
@@ -20,11 +21,15 @@ class SearchEngine
      */
     private $repository;
 
+    private $entityManager;
+
     /**
-     * @param QueryBuilder $queryBuilder
+     * @param EntityManager $entityManager
+     * @param EntityRepository $repository
      */
-    public function __construct(EntityRepository $repository)
+    public function __construct(EntityManager $entityManager, EntityRepository $repository = null)
     {
+        $this->entityManager = $entityManager;
         $this->repository = $repository;
         $this->debug = getenv('app_debug');
     }
@@ -44,10 +49,14 @@ class SearchEngine
 
     /**
      * {@inheritdoc}
+     * @return Query
      */
     public function match(array $criteria)
     {
-        $queryBuilder = $this->repository->createQueryBuilder('s');
+        $queryBuilder = $this->repository
+            ? $this->repository->createQueryBuilder('s')
+            : $this->entityManager->createQueryBuilder()
+            ;
 
         foreach ($this->builders as $builder) {
             if (true === $builder->supports($criteria)) {
@@ -56,8 +65,10 @@ class SearchEngine
         }
 
         if ($this->debug) {
-            print_r($queryBuilder->getQuery()->getDql());
-            print_r($queryBuilder->getQuery()->getParameters());
+            print_r("<br/>".$queryBuilder->getQuery()->getDql());
+            foreach ($queryBuilder->getQuery()->getParameters() as $key=>$obj) {
+                print_r("<br/>".$obj->getName()."=".$obj->getValue());
+            }
         }
 
         return $queryBuilder->getQuery();

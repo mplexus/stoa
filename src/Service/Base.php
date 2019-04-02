@@ -19,7 +19,7 @@ abstract class Base
     public function __construct(EntityManager $em)
     {
         $this->entityManager = $em;
-        $this->searchEngine = new SearchEngine($this->entityManager->getRepository($this->getResource()));
+        $this->searchEngine = new SearchEngine($em, $this->entityManager->getRepository($this->getResource()));
     }
 
     public function getEntityManager()
@@ -39,5 +39,10 @@ abstract class Base
         $this->addListBuilders();
         $query = $this->searchEngine->match($criteria);
         return $query->getResult();
+    }
+
+    public function getSearchEngine()
+    {
+        return new SearchEngine($this->entityManager);
     }
 }
