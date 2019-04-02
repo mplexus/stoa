@@ -1,24 +1,41 @@
 {% if customer_orders is not empty %}
 <script type="text/javascript">
 $(document).ready(function() {
-    var rawData = "{{ customer_orders }}";
-    var data = [];
-    for (d in rawData) {
-        if (rawData.hasOwnProperty(d)) {
-            data.push(rawData[d]['quantity']);
-        }
+    var rawData = {{ customer_orders|json_encode|raw }};
+    var orders = [];
+    var customers = [];
+    for (var j=0; j < rawData.length; j++) {
+        orders.push(+(rawData[j])['quantity']);
+        customers.push((rawData[j])['name']);
     }
-    console.log(data);
-    window.chartData = rawData;
     var ctx = document.getElementById('chartCanvas');
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data:  {
-          labels: ["S", "M", "T"],
-          datasets: window.chartData,
+          labels: customers,
+          datasets: [{
+              label: "Orders",
+              data: orders,
+              backgroundColor: 'rgba(75, 192, 192, 0.6)'
+          }],
         },
-        options: {}
+        options : {
+            responsive: true,
+            scales: {
+                yAxes: [{
+                  ticks: {
+                      max: (Math.max.apply(null, orders) + 2),
+                      min: 0,
+                      stepSize: 1
+                  }
+              }]
+          }
+        }
     });
+
+    Array.prototype.max = function() {
+        return Math.max.apply(null, this);
+    };
 });
 </script>
 {% endif %}

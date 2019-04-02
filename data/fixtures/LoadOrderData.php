@@ -14,7 +14,8 @@ class LoadData implements FixtureInterface
 
     private $countries = ['Italy', 'Nicaragua', 'Nauru', 'Tahiti'];
 
-    const NUMBER_OF_ORDERS = 10;
+    const NUMBER_OF_ORDERS = 15;
+    conSt NUMBER_OF_CUSTOMERS = 7;
 
     /**
      * {@inheritDoc}
@@ -22,7 +23,7 @@ class LoadData implements FixtureInterface
     public function load(ObjectManager $manager) {
 
         $customers = [];
-        for ($i = 0; $i <= 3; $i++) {
+        for ($i = 0; $i < self::NUMBER_OF_CUSTOMERS; $i++) {
             $customer = new Customer();
             $customer->setFirstName($this->generateRandomString(5, false))
                 ->setLastName($this->generateRandomString(5, false))
@@ -38,7 +39,7 @@ class LoadData implements FixtureInterface
             $order->setCountry($this->countries[rand(0,3)])
                 ->setDevice($this->generateRandomString())
                 ->setPurchaseDate($this->generateRandomDate())
-                ->setCustomer($customers[rand(0,2)])
+                ->setCustomer($customers[rand(0, self::NUMBER_OF_CUSTOMERS-1)])
                 ;
             $manager->persist($order);
             $orders[$i] = $order;
