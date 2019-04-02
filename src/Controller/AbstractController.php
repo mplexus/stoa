@@ -94,8 +94,8 @@ abstract class AbstractController
     protected function getCriteria(Request $request)
     {
         $criteria = [
-            'dateFrom' => date('Y-m-d 00:00:00', strtotime('first day of last month')),
-            'dateTo' => date('Y-m-d 23:59:59', strtotime('last day of last month')),
+            'date_from' => date('Y-m-d 00:00:00', strtotime('first day of last month')),
+            'date_to' => date('Y-m-d 23:59:59', strtotime('last day of last month')),
         ];
 
         $criteria = array_merge($criteria, $request->query->all());

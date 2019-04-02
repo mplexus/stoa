@@ -17,13 +17,13 @@ class DateBuilder implements Builder
 
     public function supports(array $criteria)
     {
-        return isset($criteria['dateFrom']) && isset($criteria['dateTo']);
+        return isset($criteria['date_from']) && isset($criteria['date_to']);
     }
 
     public function build(array $criteria, QueryBuilder $queryBuilder)
     {
-        $start = $criteria['dateFrom'];
-        $end = $criteria['dateTo'];
+        $start = $criteria['date_from'];
+        $end = $criteria['date_to'];
 
         if (empty($start) || empty($end)) {
             return;

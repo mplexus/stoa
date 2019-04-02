@@ -12,20 +12,65 @@ $('input[name="daterange"]').daterangepicker(daterangepickerOptions,
 
 {% if criteria is not empty %}
 <script type="text/javascript">
-$(function() {
+$(document).ready(function() {
     var picker = $('input[name="daterange"]').data('daterangepicker');
     picker.setStartDate(moment($("#dateFrom").val()));
     picker.setEndDate(moment($("#dateTo").val()));
+    window.filterTags = {{ criteria|json_encode|raw }};
 });
 </script>
 {% else %}
 <script type="text/javascript">
-$(function() {
-    var picker = $('input[name="daterange"]').data('daterangepicker');
-    picker.setStartDate(moment().startOf('month'));
-    picker.setEndDate(moment().endOf('month'));
-    $("#dateFrom").val(picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
-    $("#dateTo").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
+$(document).ready(function() {
+    $('input[name="daterange"]').val('');
 });
 </script>
 {% endif %}
+
+<script type="text/javascript">
+$(document).ready(function($) {
+    var normalizeFilterParams = function (filters) {
+        var target = {};
+        for (var key in filters) {
+            if (filters.hasOwnProperty(key)) {
+                switch (key) {
+                    case 'date_from':
+                        target["date"] = filters["date_from"]; break;
+                    case 'date_to':
+                        (!target["date"]) && (target["date"] = "");
+                        target["date"] += " - " + filters["date_to"]; break;
+                    default: target[key] = filters[key]; break;
+                }
+            }
+        }
+
+        return target;
+    };
+
+    var normalizedFilterTags = normalizeFilterParams(window.filterTags);
+
+    for (tag in normalizedFilterTags) {
+        if (normalizedFilterTags.hasOwnProperty(tag)) {
+            var newTag = $('<span></span>')
+                .addClass("badge badge-info mr-2")
+                .html(tag + ": " + normalizedFilterTags[tag]);
+            $("#filterTags").append(newTag);
+        }
+    }
+
+    if (Object.keys(filterTags).length <= 0) {
+        $("#resetFilters").hide();
+    }
+
+    $("#resetFilters").on('click', function(){
+        $('input[name="daterange"]').val('');
+        $("#dateFrom").val('');
+        $("#dateTo").val('');
+        $("#filtersForm").find(":submit")
+            .removeClass("btn-info")
+            .addClass("btn-secondary")
+            .trigger("click");
+        ;
+    });
+});
+</script>
