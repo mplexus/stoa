@@ -1,0 +1,27 @@
+{% if customer_orders is not empty %}
+<script type="text/javascript">
+$(document).ready(function() {
+    var rawData = "{{ customer_orders }}";
+    var data = [];
+    for (d in rawData) {
+        if (rawData.hasOwnProperty(d)) {
+            data.push(rawData[d]['quantity']);
+        }
+    }
+    console.log(data);
+    window.chartData = rawData;
+    var ctx = document.getElementById('chartCanvas');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data:  {
+          labels: ["S", "M", "T"],
+          datasets: window.chartData,
+        },
+        options: {}
+    });
+});
+</script>
+{% endif %}
+
+<script type="text/javascript" src="/js/chart.js"></script>
+<script type="text/javascript" src="/js/chart-options.js"></script>

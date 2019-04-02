@@ -10,6 +10,9 @@
         {% include "daterangepicker.html.twig" %}
     </div>
     <div class="row">
+        <canvas id="chartCanvas"></canvas>
+    </div>
+    <div class="row">
         <div class="col-sm-3">
             {% include "total_orders.html.twig" %}
         </div>
@@ -25,4 +28,5 @@
 
 {% block javascript %}
 {% include "daterangepickerjs.html.twig" %}
+{% include "chartjs.html.twig" %}
 {% endblock %}

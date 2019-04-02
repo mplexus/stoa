@@ -15,7 +15,7 @@ class CustomerStatsBuilder implements Builder
 
     public function build(array $criteria, QueryBuilder $queryBuilder)
     {
-        $queryBuilder->select('COUNT(o.id) as quantity')
+        $queryBuilder->select('CONCAT(CONCAT(c.first_name, \' \'), c.last_name), COUNT(o.id) as quantity')
             ->from('Stoa\Model\Order', 'o')
             ->leftJoin('o.customer', 'c', Expr\Join::WITH)
             ->groupBy('c.id')

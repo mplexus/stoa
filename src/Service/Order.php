@@ -37,7 +37,7 @@ class Order extends Base
 
         $query = $searchEngine->match($criteria);
 
-        return $query->getScalarResult();
+        return $query->getResult();
     }
 
     public function getRevenue($orderId = null)
