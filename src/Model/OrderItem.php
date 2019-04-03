@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Model;
 
 /**
@@ -48,7 +50,7 @@ class OrderItem
      *
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -60,7 +62,7 @@ class OrderItem
      *
      * @return OrderItem
      */
-    public function setEan($ean)
+    public function setEan($ean) : OrderItem
     {
         $this->ean = $ean;
 
@@ -72,7 +74,7 @@ class OrderItem
      *
      * @return int
      */
-    public function getEan()
+    public function getEan() : int
     {
         return $this->ean;
     }
@@ -84,7 +86,7 @@ class OrderItem
      *
      * @return OrderItem
      */
-    public function setQuantity($quantity)
+    public function setQuantity($quantity) : OrderItem
     {
         $this->quantity = $quantity;
 
@@ -96,7 +98,7 @@ class OrderItem
      *
      * @return int
      */
-    public function getQuantity()
+    public function getQuantity() : int
     {
         return $this->quantity;
     }
@@ -108,7 +110,7 @@ class OrderItem
      *
      * @return OrderItem
      */
-    public function setPrice($price)
+    public function setPrice($price) : OrderItem
     {
         $this->price = $price;
 
@@ -120,7 +122,7 @@ class OrderItem
      *
      * @return int
      */
-    public function getPrice()
+    public function getPrice() : int
     {
         return $this->price;
     }
@@ -132,7 +134,7 @@ class OrderItem
      *
      * @return OrderItem
      */
-    public function setOrder(Order $order = null)
+    public function setOrder(Order $order = null) : OrderItem
     {
         $this->order = $order;
 
@@ -144,7 +146,7 @@ class OrderItem
      *
      * @return Order|null
      */
-    public function getOrder()
+    public function getOrder() : ?Order
     {
         return $this->order;
     }

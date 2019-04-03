@@ -18,17 +18,27 @@ use Symfony\Component\Routing\RequestContext;
 
 class Dispatcher
 {
+    /**
+     * @var Router
+     */
     private $router;
 
+    /**
+     * @var Application
+     */
     private $app;
 
+    /**
+     * @param Application $app
+     * @param Router $router
+     */
     function __construct(Application $app, Router $router)
     {
         $this->router = $router;
         $this->app = $app;
     }
 
-    public function dispatch()
+    public function dispatch() : void
     {
         $routes = $this->router->getRoutes();
 

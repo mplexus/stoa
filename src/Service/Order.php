@@ -1,22 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Service;
 
 use Stoa\Query\DateBuilder;
 use Stoa\Query\OrderStatsBuilder;
 use Stoa\Query\CustomerStatsBuilder;
-use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\EntityManager;
 use Stoa\Model\Order as OrderModel;
 
 class Order extends Base
 {
+    /**
+     * @param EntityManager $em
+     */
     public function __construct(EntityManager $em)
     {
         parent::__construct($em);
     }
 
-    public function getStats(array $criteria = [])
+    public function getStats(array $criteria = []) : array
     {
         $searchEngine = $this->getSearchEngine();
         $searchEngine->add(new OrderStatsBuilder())
@@ -28,7 +32,7 @@ class Order extends Base
         return $query->getScalarResult();
     }
 
-    public function getCustomerStats(array $criteria = [])
+    public function getCustomerStats(array $criteria = []) : array
     {
         $searchEngine = $this->getSearchEngine();
         $searchEngine->add(new CustomerStatsBuilder())
@@ -40,13 +44,20 @@ class Order extends Base
         return $query->getResult();
     }
 
-    public function getRevenue($orderId = null)
+    /**
+     * Query the total revenue of every or a specific one order
+     * and return it as a string.
+     *
+     * @param int|null $orderId
+     * @return string
+     */
+    public function getRevenue($orderId = null) : string
     {
         $entityManager = $this->getEntityManager();
         $queryBuilder = $entityManager->getRepository($this->getResource())->createQueryBuilder('o');
 
         $queryBuilder->select('SUM(i.price) as revenue')
-            ->leftJoin('o.orderItems', 'i', Expr\Join::WITH)
+            ->leftJoin('o.orderItems', 'i')
             ;
 
         if ($orderId) {
@@ -60,23 +71,18 @@ class Order extends Base
             ;
     }
 
-    public function getTotalRevenue()
-    {
-        $entityManager = $this->getEntityManager();
-        $queryBuilder = $entityManager->getRepository('Stoa\Model\OrderItem')->createQueryBuilder('i');
-
-        return $queryBuilder->select('SUM(i.price) as revenue')
-            ->getQuery()
-            ->getSingleScalarResult()
-            ;
-    }
-
-    public function getResource()
+    /**
+     * @return string
+     */
+    public function getResource() : string
     {
         return OrderModel::class;
     }
 
-    public function addListBuilders()
+    /**
+     * @inheritdoc.
+     */
+    public function addListBuilders() : void
     {
         $this->searchEngine->add(new DateBuilder('purchaseDate'));
     }

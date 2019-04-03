@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CustomerController extends AbstractController
 {
+    /**
+     * @var CustomerService
+     */
     private $customerService;
-
-    protected $title;
 
     public function __construct(Application $app)
     {
@@ -21,7 +22,7 @@ class CustomerController extends AbstractController
         parent::__construct($app);
     }
 
-    protected function getService()
+    protected function getService() : CustomerService
     {
         if ($this->customerService == null) {
             $this->customerService = new CustomerService($this->app->entityManager);
@@ -30,7 +31,7 @@ class CustomerController extends AbstractController
         return $this->customerService;
     }
 
-    public function listAction(Request $request)
+    public function listAction(Request $request) : Response
     {
         $service = $this->getService();
         $params = array();

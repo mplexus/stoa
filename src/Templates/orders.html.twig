@@ -1,49 +1,44 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="card bg-light border-0">
-        <h3 class="card-title">Orders</h3>
-    </div>
-    <div class="card-body">
-        <h5 class="card-title">Filters</h5>
-        {% include "daterangepicker.html.twig" %}
-    </div>
-    <div class="card-body">
-        <h5 class="card-title">List of Orders</h5>
-        <div class="card">
-        {% if orders is not empty %}
-            <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Purchased At</th>
-                        <th>Customer</th>
-                        <th>Country</th>
-                        <th>Items</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for order in orders %}
-                 <tr>
-                    <td><a href="orders/{{ order.id }}">{{ order.id }}</a></td>
-                    <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
-                    <td>{{ order.customer.fullName }}</td>
-                    <td>{{ order.country }}</td>
-                    <td>{{ order.orderItems|length }}</td>
-                 </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <div class="card-footer">
-                <span class="text-muted">
-                    Showing a total of <span class="badge badge-secondary">{{orders|length}}</span> orders
-                </span>
-            </div>
-        {% else %}
-            <p>No orders found.</p>
-        {% endif %}
+<div class="card-body">
+    <h5 class="card-title">Filters</h5>
+    {% include "daterangepicker.html.twig" %}
+</div>
+<div class="card-body">
+    <h5 class="card-title">List of Orders</h5>
+    <div class="card">
+    {% if orders is not empty %}
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Purchased At</th>
+                    <th>Customer</th>
+                    <th>Country</th>
+                    <th>Items</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+             <tr>
+                <td><a href="orders/{{ order.id }}">{{ order.id }}</a></td>
+                <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
+                <td>{{ order.customer.fullName }}</td>
+                <td>{{ order.country }}</td>
+                <td>{{ order.orderItems|length }}</td>
+             </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="card-footer">
+            <span class="text-muted">
+                Showing a total of <span class="badge badge-secondary">{{orders|length}}</span> orders
+            </span>
         </div>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}}</title>
+    <title>{{pagetitle}}</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link href="/css/daterangepicker.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/custom.css">
@@ -18,7 +18,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 sidebar navbar-light bg-light">
-                <a class="navbar-brand" href="#">{{name}}</a>
+                <a class="navbar-brand" href="/">{{name}}</a>
                 <ul class="nav nav-sidebar flex-column justify-content-between">
                     {% for item in menu%}
                     <li {% if item.active %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
@@ -38,17 +38,16 @@
             <div class="col-sm-12 col-sm-offset-12 col-md-10 col-md-offset-2 main">
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
-                    {% for alertType, alerts in app.session.flashbag.all %}
-                        {% for alert in alerts %}
-                            <div class="alert alert-{{ alertType }}">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <strong>{{ alert }}</strong>
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
-                    {% block content %}{% endblock %}
+                        <div class="container-fluid">
+                            {% if noheader is null %}
+                                <div class="row">
+                                    <div class="card bg-light border-0 col">
+                                        <h3 class="card-title">{{title}}</h3>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% block content %}{% endblock %}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,23 +1,30 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Query;
 
 use Stoa\Query\Builder;
-use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 
 class CustomerStatsBuilder implements Builder
 {
-    public function supports(array $criteria)
+    /**
+     * @inheritdoc
+     */
+    public function supports(array $criteria) : bool
     {
         return true;
     }
 
-    public function build(array $criteria, QueryBuilder $queryBuilder)
+    /**
+     * @inheritdoc
+     */
+    public function build(array $criteria, QueryBuilder $queryBuilder) : void
     {
         $queryBuilder->select('CONCAT(CONCAT(c.first_name, \' \'), c.last_name) as name, COUNT(o.id) as quantity')
             ->from('Stoa\Model\Order', 'o')
-            ->leftJoin('o.customer', 'c', Expr\Join::WITH)
+            ->leftJoin('o.customer', 'c')
             ->groupBy('c.id')
             ;
     }

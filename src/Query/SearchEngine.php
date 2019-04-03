@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Query;
 
 use Stoa\Query\Builder;
@@ -14,6 +16,9 @@ class SearchEngine
      */
     private $builders = [];
 
+    /**
+     * @var bool
+     */
     private $debug = false;
 
     /**
@@ -21,6 +26,9 @@ class SearchEngine
      */
     private $repository;
 
+    /**
+     * @var EntityManager
+     */
     private $entityManager;
 
     /**
@@ -38,9 +46,9 @@ class SearchEngine
      * Adds a builder to search engine to build.
      *
      * @param Builder $builder
-     * @return void
+     * @return SearchEngine
      */
-    public function add(Builder $builder)
+    public function add(Builder $builder) : SearchEngine
     {
         $this->builders[] = $builder;
 
@@ -48,10 +56,11 @@ class SearchEngine
     }
 
     /**
-     * {@inheritdoc}
+     * Build all builders that match the criteria.
+     *
      * @return Query
      */
-    public function match(array $criteria)
+    public function match(array $criteria) : Query
     {
         $queryBuilder = $this->repository
             ? $this->repository->createQueryBuilder('s')

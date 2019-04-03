@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Query;
 
 use DateTime;
@@ -8,19 +10,31 @@ use Doctrine\ORM\QueryBuilder;
 
 class DateBuilder implements Builder
 {
+    /**
+     * @var string
+     */
     private $field = null;
 
+    /**
+     * @param string
+     */
     public function __construct($field)
     {
         $this->field = $field;
     }
 
-    public function supports(array $criteria)
+    /**
+     * @inheritdoc
+     */
+    public function supports(array $criteria) : bool
     {
         return isset($criteria['date_from']) && isset($criteria['date_to']);
     }
 
-    public function build(array $criteria, QueryBuilder $queryBuilder)
+    /**
+     * @inheritdoc
+     */
+    public function build(array $criteria, QueryBuilder $queryBuilder) : void
     {
         $start = $criteria['date_from'];
         $end = $criteria['date_to'];
@@ -37,7 +51,10 @@ class DateBuilder implements Builder
             ->setParameter(':end', $this->format($end));
     }
 
-    private function format($date)
+    /**
+     * @return string
+     */
+    private function format($date) : string
     {
         $datetime = DateTime::createFromFormat('Y-m-d H:i:s', $date);
 

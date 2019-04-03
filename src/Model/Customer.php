@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Model;
 
 use \Doctrine\Common\Collections\ArrayCollection;
@@ -59,7 +61,7 @@ class Customer
      *
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -69,7 +71,7 @@ class Customer
      *
      * @return string
      */
-    public function getFirstName()
+    public function getFirstName() : string
     {
         return $this->first_name;
     }
@@ -81,7 +83,7 @@ class Customer
      *
      * @return Customer
      */
-    public function setFirstName($fname)
+    public function setFirstName($fname) : Customer
     {
         $this->first_name = $fname;
 
@@ -93,7 +95,7 @@ class Customer
      *
      * @return string
      */
-    public function getLastName()
+    public function getLastName() : string
     {
         return $this->last_name;
     }
@@ -105,7 +107,7 @@ class Customer
      *
      * @return Customer
      */
-    public function setLastName($lname)
+    public function setLastName($lname) : Customer
     {
         $this->last_name = $lname;
 
@@ -117,7 +119,7 @@ class Customer
      *
      * @return string
      */
-    public function getFullName()
+    public function getFullName() : string
     {
         return $this->first_name . ' ' . $this->last_name;
     }
@@ -127,7 +129,7 @@ class Customer
      *
      * @return string
      */
-    public function getEmail()
+    public function getEmail() : string
     {
         return $this->email;
     }
@@ -139,7 +141,7 @@ class Customer
      *
      * @return Customer
      */
-    public function setEmail($email)
+    public function setEmail($email) : Customer
     {
         $this->email = $email;
 
@@ -153,7 +155,7 @@ class Customer
      *
      * @return Customer
      */
-    public function addOrder(Order $order)
+    public function addOrder(Order $order) : Customer
     {
         $this->orders[] = $order;
         $order->setCustomer($this);
@@ -168,7 +170,7 @@ class Customer
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeOrder(Order $order)
+    public function removeOrder(Order $order) : Order
     {
         return $this->orders->removeElement($order);
     }
@@ -178,7 +180,7 @@ class Customer
      *
      * @return Collection
      */
-    public function getOrders()
+    public function getOrders() : Collection
     {
         return $this->orders;
     }

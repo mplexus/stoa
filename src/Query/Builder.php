@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Query;
 
 use Doctrine\ORM\QueryBuilder;

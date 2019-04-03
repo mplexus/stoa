@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Controller;
 
 use Stoa\Core\Application;
@@ -23,10 +25,21 @@ abstract class AbstractController
      */
     const ITEM_COUNT_PER_PAGE = 10;
 
+    /**
+     * @var Application
+     */
     protected $app;
+
+    /**
+     * @var string
+     */
+    protected $titles;
 
     abstract protected function getService();
 
+    /**
+     * @param Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -37,7 +50,7 @@ abstract class AbstractController
      *
      * @return array
      */
-    protected function getPaginatorParams()
+    protected function getPaginatorParams() : array
     {
         $params = array();
         $range  = $this->getParam('range', static::PAGE_RANGE);
@@ -50,7 +63,7 @@ abstract class AbstractController
         return $params;
     }
 
-    protected function render($template, array $params = [], int $status = 200)
+    protected function render($template, array $params = [], int $status = 200) : Response
     {
         $template = $template . '.html.twig';
         $requestUri = $params['request_uri'] ?? '';
@@ -82,7 +95,8 @@ abstract class AbstractController
             ],
             [
                 'name' => $this->app->name,
-                'title' => $this->app->name . '::' . $this->title,
+                'pagetitle' => $this->app->name . '::' . $this->title,
+                'title' => $this->title
             ],
             $params
         );
@@ -91,7 +105,7 @@ abstract class AbstractController
         return new Response($content, $status);
     }
 
-    protected function getCriteria(Request $request)
+    protected function getCriteria(Request $request) : array
     {
         $criteria = [
             'date_from' => date('Y-m-d 00:00:00', strtotime('first day of last month')),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Core;
 
 use Stoa\Controller\IndexController;
@@ -11,9 +13,13 @@ use Symfony\Component\Routing\Route;
 class Router
 {
 
+    /**
+     * @var RouteCollection
+     */
     private $routes = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         if ($this->routes == null) {
             $this->routes = new RouteCollection();
 
@@ -21,7 +27,8 @@ class Router
         }
     }
 
-    private function setRoutes() {
+    private function setRoutes() : void
+    {
         $this->routes->add('stats', new Route('/stats', [
             '_controller' => [IndexController::class, 'statsAction']
         ]));
@@ -43,7 +50,11 @@ class Router
         ]));
     }
 
-    public function getRoutes() {
+    /**
+     * @return RouteCollection
+     */
+    public function getRoutes() : RouteCollection
+    {
         return $this->routes;
     }
 }

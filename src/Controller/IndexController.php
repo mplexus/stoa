@@ -12,11 +12,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends AbstractController
 {
+    /**
+     * @var OrderService
+     */
     private $orderService;
 
+    /**
+     * @var CustomerService
+     */
     private $customerService;
-
-    protected $title;
 
     public function __construct(Application $app)
     {
@@ -24,13 +28,13 @@ class IndexController extends AbstractController
         parent::__construct($app);
     }
 
-    protected function getService()
+    protected function getService() : void
     {
         $this->getOrderService;
         $this->getCustomerService;
     }
 
-    protected function getOrderService()
+    protected function getOrderService() : OrderService
     {
         if ($this->orderService == null) {
             $this->orderService = new OrderService($this->app->entityManager);
@@ -39,7 +43,7 @@ class IndexController extends AbstractController
         return $this->orderService;
     }
 
-    protected function getCustomerService()
+    protected function getCustomerService() : CustomerService
     {
         if ($this->customerService == null) {
             $this->customerService = new CustomerService($this->app->entityManager);
@@ -48,7 +52,7 @@ class IndexController extends AbstractController
         return $this->customerService;
     }
 
-    public function statsAction(Request $request)
+    public function statsAction(Request $request) : Response
     {
         $orderService = $this->getOrderService();
         $customerService = $this->getCustomerService();
@@ -69,8 +73,8 @@ class IndexController extends AbstractController
         return $this->render('stats', $params);
     }
 
-    public function indexAction(Request $request)
+    public function indexAction(Request $request) : Response
     {
-        return $this->render('index');
+        return $this->render('index', ['noheader' => true]);
     }
 }

@@ -9,6 +9,9 @@ use Stoa\Core\TemplateEngine;
 
 class TwigTemplateEngine implements TemplateEngine
 {
+    /**
+     * @var Twig_Environment
+     */
     private $twig;
 
     public function __construct(Twig_Environment $twig)
@@ -16,6 +19,9 @@ class TwigTemplateEngine implements TemplateEngine
         $this->twig = $twig;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function render(string $templatePath, array $params = []): string
     {
         return $this->twig->render($templatePath, $params);

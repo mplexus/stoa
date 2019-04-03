@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Model;
 
 use DateTime;
@@ -71,7 +73,7 @@ class Order
      *
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -81,7 +83,7 @@ class Order
      *
      * @return string
      */
-    public function getCountry()
+    public function getCountry() : string
     {
         return $this->country;
     }
@@ -93,7 +95,7 @@ class Order
      *
      * @return Order
      */
-    public function setCountry($country)
+    public function setCountry($country) : Order
     {
         $this->country = $country;
 
@@ -105,7 +107,7 @@ class Order
      *
      * @return string
      */
-    public function getDevice()
+    public function getDevice() : string
     {
         return $this->device;
     }
@@ -117,7 +119,7 @@ class Order
      *
      * @return Order
      */
-    public function setDevice($device)
+    public function setDevice($device) : Order
     {
         $this->device = $device;
 
@@ -129,7 +131,7 @@ class Order
      *
      * @return DateTime
      */
-    public function getPurchaseDate()
+    public function getPurchaseDate() : DateTime
     {
         return $this->purchaseDate;
     }
@@ -141,7 +143,7 @@ class Order
      *
      * @return Order
      */
-    public function setPurchaseDate($date)
+    public function setPurchaseDate($date) : Order
     {
         $this->purchaseDate = $date;
 
@@ -155,7 +157,7 @@ class Order
      *
      * @return Order
      */
-    public function addOrderItem(OrderItem $orderItem)
+    public function addOrderItem(OrderItem $orderItem) : Order
     {
         $this->orderItems[] = $orderItem;
         $orderItem->setOrder($this);
@@ -170,7 +172,7 @@ class Order
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeOrderItem(OrderItem $orderItem)
+    public function removeOrderItem(OrderItem $orderItem) : boolean
     {
         return $this->orderItems->removeElement($orderItem);
     }
@@ -180,7 +182,7 @@ class Order
      *
      * @return Collection
      */
-    public function getOrderItems()
+    public function getOrderItems() : Collection
     {
         return $this->orderItems;
     }
@@ -192,7 +194,7 @@ class Order
      *
      * @return Order
      */
-    public function setCustomer(Customer $customer = null)
+    public function setCustomer(Customer $customer = null) : Order
     {
         $this->customer = $customer;
 
@@ -204,7 +206,7 @@ class Order
      *
      * @return Customer|null
      */
-    public function getCustomer()
+    public function getCustomer() : Customer
     {
         return $this->customer;
     }

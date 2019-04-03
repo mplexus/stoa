@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends AbstractController
 {
+    /**
+     * @var OrderService
+     */
     private $orderService;
-
-    protected $title;
 
     public function __construct(Application $app)
     {
@@ -21,7 +22,7 @@ class OrderController extends AbstractController
         parent::__construct($app);
     }
 
-    protected function getService()
+    protected function getService() : OrderService
     {
         if ($this->orderService == null) {
             $this->orderService = new OrderService($this->app->entityManager);
@@ -30,7 +31,7 @@ class OrderController extends AbstractController
         return $this->orderService;
     }
 
-    public function listAction(Request $request)
+    public function listAction(Request $request) : Response
     {
         $orderService = $this->getService();
         $params = array();
@@ -44,7 +45,7 @@ class OrderController extends AbstractController
         return $this->render('orders', $params);
     }
 
-    public function viewAction(Request $request, $id)
+    public function viewAction(Request $request, $id) : Response
     {
         $orderService = $this->getService();
         $params = array();

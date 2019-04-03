@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Service;
 
 use Doctrine\ORM\EntityManager;
@@ -7,12 +9,18 @@ use Stoa\Model\Customer as CustomerModel;
 
 class Customer extends Base
 {
+    /**
+     * @param EntityManager $em
+     */
     public function __construct(EntityManager $em)
     {
         parent::__construct($em);
     }
 
-    public function getTotals()
+    /**
+     * @return int
+     */
+    public function getTotals() : int
     {
         $entityManager = $this->getEntityManager();
         $customers = $entityManager->getRepository($this->getResource())->findAll();
@@ -20,12 +28,18 @@ class Customer extends Base
         return count($customers);
     }
 
-    public function getResource()
+    /**
+     * @return string
+     */
+    public function getResource() : string
     {
         return CustomerModel::class;
     }
 
-    public function addListBuilders()
+    /**
+     * @inheritdoc
+     */
+    public function addListBuilders() : void
     {
     }
 }

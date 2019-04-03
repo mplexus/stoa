@@ -1,25 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Stoa\Query;
 
-use DateTime;
 use Stoa\Query\Builder;
-use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 
 class OrderStatsBuilder implements Builder
 {
-    public function supports(array $criteria)
+    /**
+     * @inheritdoc
+     */
+    public function supports(array $criteria) : bool
     {
         return true;
     }
 
-    public function build(array $criteria, QueryBuilder $queryBuilder)
+    /**
+     * @inheritdoc
+     */
+    public function build(array $criteria, QueryBuilder $queryBuilder) : void
     {
         $queryBuilder->select('COUNT(o.id) as quantity')
             ->addSelect('SUM(i.price) as revenue')
             ->from('Stoa\Model\Order', 'o')
-            ->leftJoin('o.orderItems', 'i',Expr\Join::WITH)
+            ->leftJoin('o.orderItems', 'i')
             ;
     }
 }
