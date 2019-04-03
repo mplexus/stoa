@@ -22,7 +22,7 @@ if (false == $env = getenv('app_env')) {
 }
 $bootstrap['env'] = $env;
 
-$isDevMode;
+$isDevMode = false;
 if ($env == 'development') {
     error_reporting(E_ALL);
     $disableCache = true;

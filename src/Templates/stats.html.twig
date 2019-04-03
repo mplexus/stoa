@@ -2,17 +2,30 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="card bg-light border-0">
-        <h3 class="card-title">Dashboard</h3>
-    </div>
-    <div class="card-body">
-        <h5 class="card-title">Filters</h5>
-        {% include "daterangepicker.html.twig" %}
-    </div>
-    <div class="row col-10">
-        <canvas id="chartCanvas"></canvas>
-    </div>
     <div class="row">
+        <div class="card bg-light border-0 col">
+            <h3 class="card-title">Dashboard</h3>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="card col-10 border-0">
+            <div class="card-body">
+                <h5 class="card-title">Filters</h5>
+                {% include "daterangepicker.html.twig" %}
+            </div>
+        </div>
+    </div>
+    <div class="mt-5">
+        <div class="card border-0">
+            <div class="card-body">
+                <h5 class="card-title">Orders / customer</h5>
+                <div class="row col-10">
+                    <canvas id="chartCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
         <div class="col-sm-3">
             {% include "total_orders.html.twig" %}
         </div>
