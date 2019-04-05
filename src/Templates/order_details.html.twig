@@ -22,7 +22,7 @@
         <td>{{ order.customer.fullName }}</td>
         <td>{{ order.country }}</td>
         <td>{{ order.orderItems|length }}</td>
-        <td>{{ revenue|number_format(2) }} EUR</td>
+        <td>{{ (revenue/100)|number_format(2) }} EUR</td>
       </tr>
 
     </table>

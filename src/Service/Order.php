@@ -49,9 +49,9 @@ class Order extends Base
      * and return it as a string.
      *
      * @param int|null $orderId
-     * @return string
+     * @return string|null
      */
-    public function getRevenue($orderId = null) : string
+    public function getRevenue($orderId = null) : ?string
     {
         $entityManager = $this->getEntityManager();
         $queryBuilder = $entityManager->getRepository($this->getResource())->createQueryBuilder('o');
