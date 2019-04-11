@@ -13,7 +13,7 @@ class OrderItem
      * @var int
      * @Id
      * @GeneratedValue
-     * @Column(type="integer")
+     * @Column(type="integer", options={"unsigned"=true})
      */
     protected $id;
 
@@ -27,14 +27,14 @@ class OrderItem
     /**
      * @var int
      *
-     * @Column(type="integer")
+     * @Column(type="integer", options={"unsigned"=true})
      */
     protected $quantity;
 
     /**
      * @var int
      *
-     * @Column(type="integer")
+     * @Column(type="integer", options={"unsigned"=true})
      */
     protected $price;
 

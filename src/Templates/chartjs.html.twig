@@ -1,6 +1,9 @@
 {% if customer_orders is not empty %}
 <script type="text/javascript">
 $(document).ready(function() {
+    Array.prototype.max = function() {
+        return Math.max.apply(null, this);
+    };
     var rawData = {{ customer_orders|json_encode|raw }};
     var orders = [];
     var customers = [];
@@ -24,7 +27,7 @@ $(document).ready(function() {
             scales: {
                 yAxes: [{
                   ticks: {
-                      max: (Math.max.apply(null, orders) + 2),
+                      max: (orders.max() + 2),
                       min: 0,
                       stepSize: 1
                   }
@@ -32,10 +35,6 @@ $(document).ready(function() {
           }
         }
     });
-
-    Array.prototype.max = function() {
-        return Math.max.apply(null, this);
-    };
 });
 </script>
 {% endif %}

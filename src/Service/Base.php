@@ -6,6 +6,7 @@ namespace Stoa\Service;
 
 use Stoa\Query\SearchEngine;
 use Doctrine\ORM\EntityManager;
+use Stoa\Core\Exception\ApplicationException;
 
 abstract class Base
 {
@@ -48,13 +49,15 @@ abstract class Base
 
     /**
      * Retrieve a single entity.
-     * @return object
+     * @return object|null
      */
-    public function getItem($id) : object
+    public function getItem($id) : ?object
     {
-        $criteria = ['id' => $id];
+        if (!ctype_digit($id)) {
+            return null;
+        }
 
-        return $this->entityManager->getRepository($this->getResource())->findOneById($criteria);
+        return $this->entityManager->getRepository($this->getResource())->find($id);
     }
 
     /**

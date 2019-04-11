@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * @Entity
  * @Table(name="orders", indexes={
- *  @Index(name="publication_date_idx", columns="purchase_date")
+ *  @Index(name="purchase_date_idx", columns="purchase_date")
  * })
  **/
 class Order
@@ -21,7 +21,7 @@ class Order
      * @var int
      * @Id
      * @GeneratedValue
-     * @Column(type="integer")
+     * @Column(type="integer", options={"unsigned"=true})
      */
     protected $id;
 

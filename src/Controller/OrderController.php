@@ -54,6 +54,7 @@ class OrderController extends AbstractController
 
         $params['order'] = $orderService->getItem($id);
         $params['revenue'] = $orderService->getRevenue($id);
+        $params['order_id'] = $id;
 
         return $this->render('order_details', $params);
     }

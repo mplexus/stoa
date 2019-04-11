@@ -22,7 +22,7 @@ class CustomerStatsBuilder implements Builder
      */
     public function build(array $criteria, QueryBuilder $queryBuilder) : void
     {
-        $queryBuilder->select('CONCAT(CONCAT(c.first_name, \' \'), c.last_name) as name, COUNT(o.id) as quantity')
+        $queryBuilder->select('CONCAT(c.first_name, \' \', c.last_name) as name, COUNT(o.id) as quantity')
             ->from('Stoa\Model\Order', 'o')
             ->leftJoin('o.customer', 'c')
             ->groupBy('c.id')

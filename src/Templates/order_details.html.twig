@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="container p-5">
+  {% if order is not null %}
   <h3>Order {{order.id}}</h3>
   <div class="card">
     <table class="table">
@@ -15,22 +16,44 @@
           <th>Revenue</th>
         </tr>
       </thead>
-
-      <tr>
-        <td>{{ order.id }}</td>
-        <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
-        <td>{{ order.customer.fullName }}</td>
-        <td>{{ order.country }}</td>
-        <td>{{ order.orderItems|length }}</td>
-        <td>{{ revenue|number_format(2) }} EUR</td>
-      </tr>
-
+      <tbody>
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
+          <td>{{ order.customer.fullName }}</td>
+          <td>{{ order.country }}</td>
+          <td>{{ order.orderItems|length }}</td>
+          <td>{{ (revenue/100)|number_format(2) }} EUR</td>
+        </tr>
+      </tbody>
     </table>
-
   </div>
+  <div class="card mt-5">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Ean</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.orderItems  %}
+        <tr>
+          <td>{{ item.ean }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ (item.price/100)|number_format(2) }} EUR</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="alert alert-danger">Cannot find order with id {{ order_id }} !</p>
+  {% endif %}
 
   <div class="mt-5">
       <a href="/orders">Back</a>
   </div>
 </div>
- {% endblock %}
+{% endblock %}
