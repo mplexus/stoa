@@ -13,7 +13,7 @@
           <th>Customer</th>
           <th>Country</th>
           <th>Items</th>
-          <th>Revenue</th>
+          <th class="text-right">Revenue</th>
         </tr>
       </thead>
       <tbody>
@@ -23,7 +23,7 @@
           <td>{{ order.customer.fullName }}</td>
           <td>{{ order.country }}</td>
           <td>{{ order.orderItems|length }}</td>
-          <td>{{ (revenue/100)|number_format(2) }} EUR</td>
+          <td class="text-right">{{ (revenue/100)|number_format(2) }} EUR</td>
         </tr>
       </tbody>
     </table>
@@ -35,6 +35,7 @@
           <th>Ean</th>
           <th>Quantity</th>
           <th>Price</th>
+          <th class="text-right">Total</th>
         </tr>
       </thead>
       <tbody>
@@ -43,6 +44,7 @@
           <td>{{ item.ean }}</td>
           <td>{{ item.quantity }}</td>
           <td>{{ (item.price/100)|number_format(2) }} EUR</td>
+          <td class="text-right">{{ (item.quantity * item.price/100)|number_format(2) }}</td>
         </tr>
         {% endfor %}
       </tbody>
