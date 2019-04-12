@@ -5,51 +5,26 @@ $(document).ready(function() {
         return Math.max.apply(null, this);
     };
     var rawData = {{ customer_orders|json_encode|raw }};
-    var orderData = {
-        "time":["2019-04-01","2019-04-02","2019-04-03","2019-04-04","2019-04-05","2019-04-08","2019-04-09","2019-04-10","2019-04-11","2019-04-12"],
-        "values":["2","5","1","2","10","4","1","8","1","2"]
-    };
-    var customerData = {
-        "time":["2019-04-01","2019-04-02","2019-04-03","2019-04-04","2019-04-05"],
-        "values":["Nick Cave","Leo Matis","Leo Matis","KKK kkk","Lla La",]
-    };
-    //console.log(orderData);
-    var orders = orderData.values;
-    var time = orderData.time;
-    var customers = customerData.values;
-    //for (var j=0; j < orderData.length; j++) {
-    //    orders.push(+(orderData[j])['quantity']);
-    //    customers.push((orderData[j])['name']);
-    //}
+    var orders = rawData.quantity;
+    var dates = rawData.dates;
+    var customers = rawData.customers;
     var ctx = document.getElementById('chartCanvas');
     var myChart = new Chart(ctx, {
         type: 'line',
         data:  {
-          labels: time,
+          labels: dates,
           datasets: [
-              {
-                  label: "Orders",
-                  data: orders,
-                  backgroundColor: 'rgba(75, 192, 192, 0.6)'
-              },
-              {
-                  label: "Customers",
-                  data: customers,
-                  backgroundColor: 'rgba(125, 172, 172, 0.6)'
-              }
+            {
+              label: "Orders",
+              data: orders,
+              backgroundColor: 'rgba(95, 192, 192, 0.4)'
+            },
+            {
+              label: "Customers",
+              data: customers,
+              backgroundColor: 'rgba(200, 200, 200, 0.4)'
+            }
           ],
-        },
-        options : {
-            responsive: true,
-            scales: {
-                yAxes: [{
-                  ticks: {
-                      max: (orders.max() + 2),
-                      min: 0,
-                      //stepSize: 1
-                  }
-              }]
-          }
         }
     });
 });

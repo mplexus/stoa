@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Stoa\Service;
 
-use Stoa\Query\Transformer;
 use Stoa\Query\SearchEngine;
 use Doctrine\ORM\EntityManager;
 use Stoa\Core\Exception\ApplicationException;
@@ -28,11 +27,6 @@ abstract class Base
      * the parent class.
      */
     public abstract function addListBuilders() : void;
-
-    /**
-     * The entity transformer.
-     */
-    public abstract function getTransformer() : Transformer;
 
     /**
      * @param EntityManager $em

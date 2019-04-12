@@ -69,8 +69,8 @@ class IndexController extends AbstractController
 
         $params['total_customers'] = $customerService->getTotals();
 
-        $params['customer_orders'] = $orderService->getCustomerStatsByDay($criteria);
-        //print_r($params['customer_orders']);
+        $params['customer_orders'] = $orderService->getCustomerStats($criteria);
+print_r($params['customer_orders']);
         return $this->render('stats', $params);
     }
 

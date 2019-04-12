@@ -14,7 +14,7 @@ class LoadData implements FixtureInterface
 
     private $countries = ['Italy', 'Nicaragua', 'Nauru', 'Tahiti'];
 
-    const NUMBER_OF_ORDERS = 15;
+    const NUMBER_OF_ORDERS = 100;
     conSt NUMBER_OF_CUSTOMERS = 7;
 
     /**

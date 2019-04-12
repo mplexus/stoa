@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Stoa\Service;
 
 use Stoa\Query\DateBuilder;
-use Stoa\Query\Transformer;
 use Stoa\Query\OrderStatsBuilder;
-use Stoa\Query\OrderTransformer;
+use Stoa\Query\StatsTransformer;
+use Stoa\Query\DateGroupingBuilder;
 use Stoa\Query\CustomerStatsBuilder;
 use Doctrine\ORM\EntityManager;
 use Stoa\Model\Order as OrderModel;
@@ -39,23 +39,12 @@ class Order extends Base
         $searchEngine = $this->getSearchEngine();
         $searchEngine->add(new CustomerStatsBuilder())
             ->add(new DateBuilder('purchaseDate'))
+            //->add(new DateGroupingBuilder())
             ;
 
         $query = $searchEngine->match($criteria);
 
-        return $query->getResult();
-    }
-
-    public function getCustomerStatsByDay(array $criteria = []) : array
-    {
-        $searchEngine = $this->getSearchEngine();
-        $searchEngine->add(new CustomerStatsBuilder())
-            ->add(new DateBuilder('purchaseDate'))
-            ;
-
-        $query = $searchEngine->match($criteria);
-
-        return $this->getTransformer()->transform($query->getResult());
+        return $this->getStatsTransformer()->transform($query->getResult());
     }
 
     /**
@@ -104,8 +93,8 @@ class Order extends Base
     /**
      * @inheritdoc.
      */
-    public function getTransformer() : Transformer
+    public function getStatsTransformer() : StatsTransformer
     {
-        return new OrderTransformer();
+        return new StatsTransformer();
     }
 }
