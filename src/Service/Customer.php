@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Stoa\Service;
 
+use Stoa\Query\Transformer;
+use Stoa\Query\OrderStatsBuilder;
+use Stoa\Query\CustomerTransformer;
 use Doctrine\ORM\EntityManager;
 use Stoa\Model\Customer as CustomerModel;
 
@@ -41,5 +44,13 @@ class Customer extends Base
      */
     public function addListBuilders() : void
     {
+    }
+
+    /**
+     * @inheritdoc.
+     */
+    public function getTransformer() : Transformer
+    {
+        return new CustomerTransformer();
     }
 }

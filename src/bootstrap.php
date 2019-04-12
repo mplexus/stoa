@@ -45,6 +45,7 @@ $conn = array(
 $bootstrap['connection'] = $conn;
 
 $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . "/Model"), $isDevMode);
+$config->addCustomDatetimeFunction('DATE_FORMAT', \Stoa\Query\DateFormat::class);
 $bootstrap['config'] = $config;
 
 $entityManager = EntityManager::create($conn, $config);

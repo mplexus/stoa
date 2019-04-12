@@ -5,6 +5,7 @@ $(document).ready(function() {
         return Math.max.apply(null, this);
     };
     var rawData = {{ customer_orders|json_encode|raw }};
+    console.log(rawData);
     var orders = [];
     var customers = [];
     for (var j=0; j < rawData.length; j++) {
