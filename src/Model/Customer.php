@@ -16,7 +16,7 @@ class Customer
      * @var int
      * @Id
      * @GeneratedValue
-     * @Column(type="integer")
+     * @Column(type="integer", options={"unsigned"=true})
      */
     protected $id;
 
@@ -37,7 +37,7 @@ class Customer
     /**
      * @var string
      *
-     * @Column(type="string")
+     * @Column(type="string", length=254)
      */
     protected $email;
 

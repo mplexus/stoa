@@ -6,11 +6,13 @@ namespace Stoa\Core\Exception;
 
 use Exception;
 use BadMethodCallException;
+use UnexpectedValueException;
 
 class ApplicationException extends Exception
 {
     const INVALID_CONFIGURATION = 50000;
     const INVALID_RESOURCE = 50001;
+    const RESOURCE_ITEM_NOT_FOUND = 50002;
 
     /**
     * @param string|null $message
@@ -33,6 +35,19 @@ class ApplicationException extends Exception
         return new BadMethodCallException(
             sprintf("Invalid resource: `%s`", $message),
             self::INVALID_RESOURCE
+        );
+    }
+
+    /**
+     * @param string $resource
+     * @param string $id
+     * @return UnexpectedValueException
+     */
+    public static function resourceItemNotFound($resource, $id) : UnexpectedValueException
+    {
+        return new UnexpectedValueException(
+            sprintf("Cannot find `%s` with id `%s`", $resource, $id),
+            self::RESOURCE_ITEM_NOT_FOUND
         );
     }
 }

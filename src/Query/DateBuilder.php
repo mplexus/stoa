@@ -54,9 +54,13 @@ class DateBuilder implements Builder
     /**
      * @return string
      */
-    private function format($date) : string
+    private function format($date) : ?string
     {
         $datetime = DateTime::createFromFormat('Y-m-d H:i:s', $date);
+
+        if (!$datetime) {
+            return null;
+        }
 
         return $datetime->format('Y-m-d H:i:s');
     }

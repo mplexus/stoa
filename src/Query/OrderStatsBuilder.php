@@ -22,8 +22,8 @@ class OrderStatsBuilder implements Builder
      */
     public function build(array $criteria, QueryBuilder $queryBuilder) : void
     {
-        $queryBuilder->select('COUNT(o.id) as quantity')
-            ->addSelect('SUM(i.price) as revenue')
+        $queryBuilder->select('COUNT(DISTINCT o.id) as quantity')
+            ->addSelect('SUM(i.price * i.quantity) as revenue')
             ->from('Stoa\Model\Order', 'o')
             ->leftJoin('o.orderItems', 'i')
             ;

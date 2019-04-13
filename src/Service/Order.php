@@ -6,6 +6,8 @@ namespace Stoa\Service;
 
 use Stoa\Query\DateBuilder;
 use Stoa\Query\OrderStatsBuilder;
+use Stoa\Query\StatsTransformer;
+use Stoa\Query\DateGroupingBuilder;
 use Stoa\Query\CustomerStatsBuilder;
 use Doctrine\ORM\EntityManager;
 use Stoa\Model\Order as OrderModel;
@@ -41,7 +43,7 @@ class Order extends Base
 
         $query = $searchEngine->match($criteria);
 
-        return $query->getResult();
+        return $this->getStatsTransformer()->transform($query->getResult());
     }
 
     /**
@@ -56,7 +58,7 @@ class Order extends Base
         $entityManager = $this->getEntityManager();
         $queryBuilder = $entityManager->getRepository($this->getResource())->createQueryBuilder('o');
 
-        $queryBuilder->select('SUM(i.price) as revenue')
+        $queryBuilder->select('SUM(i.price * i.quantity) as revenue')
             ->leftJoin('o.orderItems', 'i')
             ;
 
@@ -85,5 +87,13 @@ class Order extends Base
     public function addListBuilders() : void
     {
         $this->searchEngine->add(new DateBuilder('purchaseDate'));
+    }
+
+    /**
+     * @inheritdoc.
+     */
+    public function getStatsTransformer() : StatsTransformer
+    {
+        return new StatsTransformer();
     }
 }

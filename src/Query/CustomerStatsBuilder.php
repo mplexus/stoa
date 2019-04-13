@@ -22,10 +22,27 @@ class CustomerStatsBuilder implements Builder
      */
     public function build(array $criteria, QueryBuilder $queryBuilder) : void
     {
-        $queryBuilder->select('CONCAT(CONCAT(c.first_name, \' \'), c.last_name) as name, COUNT(o.id) as quantity')
+        $type = isset($criteria['type']) ? $criteria['type'] : null;
+        $format = '';
+
+        switch ($type) {
+            case 'month':
+                $format = "%Y-%m";
+                break;
+            case 'year':
+                $format = "%Y";
+                break;
+            case 'day':
+            default:
+                $format = "%Y-%m-%d";
+                break;
+        }
+
+        $queryBuilder->select('DATE_FORMAT(o.purchaseDate, \''.$format.'\') as date, COUNT(DISTINCT c.id) as customers, COUNT(o.id) as quantity')
             ->from('Stoa\Model\Order', 'o')
             ->leftJoin('o.customer', 'c')
-            ->groupBy('c.id')
+            ->groupBy('date')
+            ->orderBy('date')
             ;
     }
 }

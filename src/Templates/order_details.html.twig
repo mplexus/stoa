@@ -2,35 +2,62 @@
 
 {% block content %}
 <div class="container p-5">
+  {% if order is not null %}
   <h3>Order {{order.id}}</h3>
-  <div class="card">
+  <div class="card table-responsive">
     <table class="table">
       <thead class="thead-light">
         <tr>
           <th>ID</th>
+          <th>Device</th>
           <th>Purchased At</th>
           <th>Customer</th>
           <th>Country</th>
           <th>Items</th>
-          <th>Revenue</th>
+          <th class="text-right">Revenue</th>
         </tr>
       </thead>
-
-      <tr>
-        <td>{{ order.id }}</td>
-        <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
-        <td>{{ order.customer.fullName }}</td>
-        <td>{{ order.country }}</td>
-        <td>{{ order.orderItems|length }}</td>
-        <td>{{ (revenue/100)|number_format(2) }} EUR</td>
-      </tr>
-
+      <tbody>
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.device }}</td>
+          <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
+          <td>{{ order.customer.fullName }}</td>
+          <td>{{ order.country }}</td>
+          <td>{{ order.orderItems|length }}</td>
+          <td class="text-right">{{ (revenue/100)|number_format(2) }} EUR</td>
+        </tr>
+      </tbody>
     </table>
-
   </div>
+  <div class="card mt-5">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Ean</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th class="text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.orderItems  %}
+        <tr>
+          <td>{{ item.ean }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ (item.price/100)|number_format(2) }} EUR</td>
+          <td class="text-right">{{ (item.quantity * item.price/100)|number_format(2) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="alert alert-danger">Cannot find order with id {{ order_id }} !</p>
+  {% endif %}
 
   <div class="mt-5">
       <a href="/orders">Back</a>
   </div>
 </div>
- {% endblock %}
+{% endblock %}

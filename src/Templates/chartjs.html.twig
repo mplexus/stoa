@@ -2,40 +2,66 @@
 <script type="text/javascript">
 $(document).ready(function() {
     var rawData = {{ customer_orders|json_encode|raw }};
-    var orders = [];
-    var customers = [];
-    for (var j=0; j < rawData.length; j++) {
-        orders.push(+(rawData[j])['quantity']);
-        customers.push((rawData[j])['name']);
-    }
+    var type = '{{ criteria.type }}' || '';
+    var orders = rawData.quantity;
+    var dates = [];
+    rawData.dates.forEach(function(date) {
+      var _tmp = '';
+      switch (type) {
+        case 'year':
+          _tmp = date;
+          break;
+        case 'month':
+          _tmp = moment(date + '-01', "YYYY-MM-DD").format('MMM YYYY');
+          break;
+        case 'day':
+          _tmp = moment(date, "YYYY-MM-DD").format('DD MMM');;
+          break;
+        default:
+          _tmp = date;
+          break;
+      }
+      dates.push(_tmp);
+    });
+    var customers = rawData.customers;
     var ctx = document.getElementById('chartCanvas');
     var myChart = new Chart(ctx, {
-        type: 'bar',
+        type: (orders[1] ? 'line' : 'bar'),
         data:  {
-          labels: customers,
-          datasets: [{
+          labels: dates,
+          datasets: [
+            {
               label: "Orders",
+              yAxisID: 'y-axis-1',
               data: orders,
-              backgroundColor: 'rgba(75, 192, 192, 0.6)'
-          }],
-        },
-        options : {
-            responsive: true,
-            scales: {
-                yAxes: [{
-                  ticks: {
-                      max: (Math.max.apply(null, orders) + 2),
-                      min: 0,
-                      stepSize: 1
+              backgroundColor: 'rgba(95, 192, 192, 0.4)'
+            },
+            {
+              label: "Customers",
+              yAxisID: 'y-axis-1',
+              data: customers,
+              backgroundColor: 'rgba(200, 200, 200, 0.4)'
+            }
+          ]
+      },
+      options : {
+          responsive: true,
+          scales: {
+              yAxes: [{
+                id: 'y-axis-1',
+                type: 'linear',
+                position: 'left',
+                ticks: {
+                  callback: function(value, index, values) {
+                    if (Math.floor(value) === value) {
+                      return value;
+                    }
                   }
-              }]
-          }
+                }
+            }]
         }
+      }
     });
-
-    Array.prototype.max = function() {
-        return Math.max.apply(null, this);
-    };
 });
 </script>
 {% endif %}
