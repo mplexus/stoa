@@ -4,11 +4,12 @@
 <div class="container p-5">
   {% if order is not null %}
   <h3>Order {{order.id}}</h3>
-  <div class="card">
+  <div class="card table-responsive">
     <table class="table">
       <thead class="thead-light">
         <tr>
           <th>ID</th>
+          <th>Device</th>
           <th>Purchased At</th>
           <th>Customer</th>
           <th>Country</th>
@@ -19,6 +20,7 @@
       <tbody>
         <tr>
           <td>{{ order.id }}</td>
+          <td>{{ order.device }}</td>
           <td>{{ order.purchaseDate|date("Y-m-d H:i:s") }}</td>
           <td>{{ order.customer.fullName }}</td>
           <td>{{ order.country }}</td>

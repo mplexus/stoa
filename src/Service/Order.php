@@ -39,7 +39,6 @@ class Order extends Base
         $searchEngine = $this->getSearchEngine();
         $searchEngine->add(new CustomerStatsBuilder())
             ->add(new DateBuilder('purchaseDate'))
-            //->add(new DateGroupingBuilder())
             ;
 
         $query = $searchEngine->match($criteria);

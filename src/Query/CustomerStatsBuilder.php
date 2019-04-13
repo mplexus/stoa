@@ -14,9 +14,7 @@ class CustomerStatsBuilder implements Builder
      */
     public function supports(array $criteria) : bool
     {
-        return isset($criteria['type'])
-            ? in_array($criteria['type'], ['day', 'month', 'year'])
-            : true;
+        return true;
     }
 
     /**

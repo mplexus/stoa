@@ -1,31 +1,66 @@
 {% if customer_orders is not empty %}
 <script type="text/javascript">
 $(document).ready(function() {
-    Array.prototype.max = function() {
-        return Math.max.apply(null, this);
-    };
     var rawData = {{ customer_orders|json_encode|raw }};
+    var type = '{{ criteria.type }}' || '';
     var orders = rawData.quantity;
-    var dates = rawData.dates;
+    var dates = [];
+    rawData.dates.forEach(function(date) {
+      var _tmp = '';
+      switch (type) {
+        case 'year':
+          _tmp = date;
+          break;
+        case 'month':
+          _tmp = moment(date + '-01', "YYYY-MM-DD").format('MMM YYYY');
+          break;
+        case 'day':
+          _tmp = moment(date, "YYYY-MM-DD").format('DD MMM');;
+          break;
+        default:
+          _tmp = date;
+          break;
+      }
+      dates.push(_tmp);
+    });
     var customers = rawData.customers;
     var ctx = document.getElementById('chartCanvas');
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: (orders[1] ? 'line' : 'bar'),
         data:  {
           labels: dates,
           datasets: [
             {
               label: "Orders",
+              yAxisID: 'y-axis-1',
               data: orders,
               backgroundColor: 'rgba(95, 192, 192, 0.4)'
             },
             {
               label: "Customers",
+              yAxisID: 'y-axis-1',
               data: customers,
               backgroundColor: 'rgba(200, 200, 200, 0.4)'
             }
-          ],
+          ]
+      },
+      options : {
+          responsive: true,
+          scales: {
+              yAxes: [{
+                id: 'y-axis-1',
+                type: 'linear',
+                position: 'left',
+                ticks: {
+                  callback: function(value, index, values) {
+                    if (Math.floor(value) === value) {
+                      return value;
+                    }
+                  }
+                }
+            }]
         }
+      }
     });
 });
 </script>

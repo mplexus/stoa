@@ -8,9 +8,24 @@ $('input[name="daterange"]').daterangepicker(daterangepickerOptions,
         $("#dateTo").val(end.format('YYYY-MM-DD HH:mm:ss'));
     }
 );
+$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+    console.log("apply");
+    var _fromDate = moment(picker.startDate, 'YYYY-MM-DD');
+    var _toDate = moment(picker.endDate, 'YYYY-MM-DD');
+    var dateDiff = _toDate.diff(_fromDate, 'days');
+    var type;
+    if (dateDiff < 95) {
+      type = 'day';
+    } else if (dateDiff < 600) {
+      type = 'month';
+    } else {
+      type = 'year'
+    }
+    $("#dateRangeType").val(type);
+});
 </script>
 
-{% if criteria is not empty %}
+{% if criteria.date_from and criteria.date_to %}
 <script type="text/javascript">
 $(document).ready(function() {
     var picker = $('input[name="daterange"]').data('daterangepicker');
@@ -51,6 +66,9 @@ $(document).ready(function($) {
 
     for (tag in normalizedFilterTags) {
         if (normalizedFilterTags.hasOwnProperty(tag)) {
+            if (tag == 'type') {
+                continue;
+            }
             var newTag = $('<span></span>')
                 .addClass("badge badge-info mr-2")
                 .html(tag + ": " + normalizedFilterTags[tag]);
