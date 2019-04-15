@@ -9,6 +9,8 @@ use Twig\Environment as TwigEnvironment;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+define('APPLICATION_ROOT' , __DIR__);
+
 $bootstrap = array();
 
 $bootstrap['name'] = 'Stoa';

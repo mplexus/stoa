@@ -4,11 +4,12 @@ declare(strict_types = 1);
 
 namespace Stoa\Core;
 
+use Symfony\Component\Routing\Route;
 use Stoa\Controller\IndexController;
 use Stoa\Controller\OrderController;
 use Stoa\Controller\CustomerController;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Route;
+use Stoa\Core\Exception\ApplicationException;
 
 class Router
 {
@@ -21,7 +22,7 @@ class Router
     public function __construct()
     {
         if ($this->routes == null) {
-            $this->routes = new array();//RouteCollection();
+            $this->routes = [];//RouteCollection();
 
             //$this->setRoutes();
         }
@@ -85,17 +86,36 @@ class Router
      */
     public function validate ($route, $id, $params) : void
     {
-        $controllerName = $route;
+        $controller = null;
+        $controllerName = ucfirst(rtrim($route, 's'));
+        $target = APPLICATION_ROOT . '/Controller/' . $controllerName . 'Controller.php';
+        if (file_exists($target)) {
+            include_once($target);
+            $class = $controllerName . "Controller";
+            $controller = new $class;
+        } else {
+            throw ApplicationException::badRequest($route);
+        }
 
+        $action = null;
         switch (1) {
-            case $route == "orders":
-                $controllerName = ;
+            case $route == "orders" && $id != null:
+                $action = "viewAction";
                 break;
+            case $route == "orders":
+            case $route == "customers":
+                $action = "listAction";
+                break;
+            case $route == "stats":
+                $action = "statsAction";
             default:
+                $action = "indexAction";
                 break;
         }
 
-        $controller = ucwords($controller);
+        if ((int)method_exists($controller, $action)) {
+            call_user_func_array(array($controller,$action),$params);
+        }
     }
 
     /**
