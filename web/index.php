@@ -7,6 +7,6 @@ use Stoa\Core\Dispatcher;
 use Stoa\Core\Application;
 
 $app = new Application($bootstrap);
-$router = new Router();
-$dispatcher = new Dispatcher($app, $router);
-$dispatcher->dispatch();
+$router = new Router($app);
+//$dispatcher = new Dispatcher($app, $router);
+//$dispatcher->dispatch();

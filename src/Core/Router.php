@@ -4,12 +4,14 @@ declare(strict_types = 1);
 
 namespace Stoa\Core;
 
+use Stoa\Core\Application;
 use Symfony\Component\Routing\Route;
 use Stoa\Controller\IndexController;
 use Stoa\Controller\OrderController;
 use Stoa\Controller\CustomerController;
 use Symfony\Component\Routing\RouteCollection;
 use Stoa\Core\Exception\ApplicationException;
+use Symfony\Component\HttpFoundation\Request;
 
 class Router
 {
@@ -19,13 +21,20 @@ class Router
      */
     private $routes = null;
 
-    public function __construct()
+    /**
+     * @var Application
+     */
+    private $app = null;
+
+    public function __construct(Application $app)
     {
         if ($this->routes == null) {
             $this->routes = [];//RouteCollection();
 
             //$this->setRoutes();
         }
+
+        $this->app = $app;
 
         $url = $_SERVER['REQUEST_URI'];
         $urlArray = array();
@@ -38,22 +47,19 @@ class Router
         $uri = array_shift($parsed);
         $uriParts = explode('/', $uri);
         $route = $uriParts[1];
-        echo "route=".$route."<br/>";
         $id = $uriParts[2] ?? null;
-        echo "id=".$id."<br/>";
 
         //find params
-        $getVars = array();
-        foreach ($parsed as $argument)
-        {
-            list($variable , $value) = split('=' , $argument);
-            $getVars[$variable] = $value;
-        }
+        //$getVars = array();
+        //foreach ($parsed as $argument)
+        //{
+            //list($variable , $value) = split('=' , $argument);
+            //$getVars[$variable] = $value;
+        //}
 
-        $vars = print_r($getVars, TRUE);
-        print "The following GET vars were passed to the page:<pre>".$vars."</pre>";
+        //$vars = print_r($getVars, TRUE);
 
-        $this->validate($route, $id, $getVars);
+        $this->validate($route, $id, []);
     }
 
     private function setRoutes() : void
@@ -87,12 +93,12 @@ class Router
     public function validate ($route, $id, $params) : void
     {
         $controller = null;
-        $controllerName = ucfirst(rtrim($route, 's'));
-        $target = APPLICATION_ROOT . '/Controller/' . $controllerName . 'Controller.php';
+        $controllerName = $this->resolveControllerName($route);
+        $target = APPLICATION_ROOT .  DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR . $controllerName . 'Controller.php';
         if (file_exists($target)) {
             include_once($target);
-            $class = $controllerName . "Controller";
-            $controller = new $class;
+            $class = "Stoa\\Controller\\" . $controllerName . "Controller";
+            $controller = new $class($this->app);
         } else {
             throw ApplicationException::badRequest($route);
         }
@@ -108,13 +114,18 @@ class Router
                 break;
             case $route == "stats":
                 $action = "statsAction";
+                break;
             default:
                 $action = "indexAction";
                 break;
         }
 
         if ((int)method_exists($controller, $action)) {
-            call_user_func_array(array($controller,$action),$params);
+            $request = Request::createFromGlobals();
+            $response = call_user_func_array(array($controller,$action),array($request, $id));
+            $response->send();
+        } else {
+            throw ApplicationException::badRequest($route);
         }
     }
 
@@ -124,5 +135,14 @@ class Router
     public function getRoutes() : RouteCollection
     {
         return $this->routes;
+    }
+
+    public function resolveControllerName($route) : string
+    {
+        $controllerName = ucfirst(rtrim($route, 's'));
+        if ($route == "stats") {
+            $controllerName = "Index";
+        }
+        return $controllerName;
     }
 }
