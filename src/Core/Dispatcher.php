@@ -6,15 +6,8 @@ namespace Stoa\Core;
 
 use Stoa\Core\Router;
 use Stoa\Core\Application;
-use Stoa\Core\ControllerResolver;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Stoa\Core\Exception\ApplicationException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
-use Symfony\Component\HttpKernel\EventListener\RouterListener;
-use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\RequestContext;
 
 class Dispatcher
 {
@@ -38,25 +31,62 @@ class Dispatcher
         $this->app = $app;
     }
 
-    public function dispatch() : void
+    public function match() : void
     {
         $routes = $this->router->getRoutes();
 
-        $request = Request::createFromGlobals();
+        $request = $_SERVER['REQUEST_URI'];
+        $parsed = explode('?' , $request);
 
-        $matcher = new UrlMatcher($routes, new RequestContext());
+        $uri = array_shift($parsed);
+        $uriParts = explode('/', $uri);
 
-        $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new RouterListener($matcher, new RequestStack()));
+        $id = $uriParts[2] ?? null;
+        $requestedPath = $uriParts[1] .  ($id ? '/'.$id : '');
 
-        $controllerResolver = new ControllerResolver($this->app);
-        $argumentResolver = new ArgumentResolver();
+        foreach ($routes as $route) {
+            $regex = "#^".$route[0]."$#";
 
-        $kernel = new HttpKernel($dispatcher, $controllerResolver, new RequestStack(), $argumentResolver);
+            if (!preg_match($regex, "/".$requestedPath)) {
+                continue;
+            }
 
-        $response = $kernel->handle($request);
-        $response->send();
+            $controllerName = $route[1];
+            $action = $route[2];
+            $this->dispatch($controllerName, $action, $id);
+            return;
+        }
 
-        $kernel->terminate($request, $response);
+        throw ApplicationException::badRequest($requestedPath);
+    }
+
+    private function dispatch($controllerName, $action, $id) : void
+    {
+        $controller = null;
+        $target = APPLICATION_ROOT .  DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR . $controllerName . 'Controller.php';
+        if (file_exists($target)) {
+            include_once($target);
+            $class = "Stoa\\Controller\\" . $controllerName . "Controller";
+            $controller = new $class($this->app);
+        } else {
+            throw ApplicationException::badRequest($route);
+        }
+
+        if ((int)method_exists($controller, $action)) {
+            $request = Request::createFromGlobals();
+            $response = call_user_func_array(array($controller,$action),array($request, $id));
+            $response->send();
+        } else {
+            throw ApplicationException::badRequest($route);
+        }
+    }
+
+    public function resolveControllerName($route) : string
+    {
+        $controllerName = ucfirst(rtrim($route, 's'));
+        if ($route == "stats") {
+            $controllerName = "Index";
+        }
+        return $controllerName;
     }
 }

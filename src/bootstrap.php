@@ -1,13 +1,13 @@
 <?php
 
+require_once __DIR__ . "/../vendor/autoload.php";
+
 use Dotenv\Dotenv;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use \Whoops\Handler\PrettyPageHandler;
 use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 use Twig\Environment as TwigEnvironment;
-
-require_once __DIR__ . "/../vendor/autoload.php";
 
 define('APPLICATION_ROOT' , __DIR__);
 
