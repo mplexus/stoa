@@ -9,4 +9,4 @@ use Stoa\Core\Application;
 $app = new Application($bootstrap);
 $router = new Router();
 $dispatcher = new Dispatcher($app, $router);
-$dispatcher->dispatch();
+$dispatcher->match();
