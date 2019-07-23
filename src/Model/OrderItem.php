@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace Stoa\Model;
 
+use Stoa\Model\BaseModel as Base;
+
 /**
  * @Entity @Table(name="order_items")
  **/
-class OrderItem
+class OrderItem extends Base
 {
     /**
      * @var int
