@@ -4,13 +4,14 @@ declare(strict_types = 1);
 
 namespace Stoa\Model;
 
+use Stoa\Model\BaseModel as Base;
 use \Doctrine\Common\Collections\ArrayCollection;
 use \Doctrine\Common\Collections\Collection;
 
 /**
  * @Entity @Table(name="customers")
  **/
-class Customer
+class Customer extends Base
 {
     /**
      * @var int

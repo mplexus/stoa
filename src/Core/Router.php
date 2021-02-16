@@ -4,24 +4,18 @@ declare(strict_types = 1);
 
 namespace Stoa\Core;
 
-use Stoa\Controller\IndexController;
-use Stoa\Controller\OrderController;
-use Stoa\Controller\CustomerController;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Route;
-
 class Router
 {
 
     /**
-     * @var RouteCollection
+     * @var array
      */
     private $routes = null;
 
     public function __construct()
     {
         if ($this->routes == null) {
-            $this->routes = new RouteCollection();
+            $this->routes = [];
 
             $this->setRoutes();
         }
@@ -29,31 +23,23 @@ class Router
 
     private function setRoutes() : void
     {
-        $this->routes->add('stats', new Route('/stats', [
-            '_controller' => [IndexController::class, 'statsAction']
-        ]));
+        $this->routes[] = ['/stats', 'Index', 'statsAction'];
 
-        $this->routes->add('orders', new Route('/orders', [
-            '_controller' => [OrderController::class, 'listAction']
-        ]));
+        $this->routes[] = ['/orders', 'Order', 'listAction'];
 
-        $this->routes->add('order', new Route('/orders/{id}', [
-            '_controller' => [OrderController::class, 'viewAction']
-        ]));
+        $this->routes[] = ['/orders/\S+', 'Order', 'viewAction'];
 
-        $this->routes->add('customers', new Route('/customers', [
-            '_controller' => [CustomerController::class, 'listAction']
-        ]));
+        $this->routes[] = ['/customers', 'Customer', 'listAction'];
 
-        $this->routes->add('index', new Route('/', [
-            '_controller' => [IndexController::class, 'indexAction']
-        ]));
+        $this->routes[] = ['/index', 'Index', 'indexAction'];
+
+        $this->routes[] = ['/', 'Index', 'indexAction'];
     }
 
     /**
-     * @return RouteCollection
+     * @return array
      */
-    public function getRoutes() : RouteCollection
+    public function getRoutes() : array
     {
         return $this->routes;
     }

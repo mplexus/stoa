@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Stoa\Service;
 
+use Stoa\Model\BaseModel;
 use Stoa\Query\SearchEngine;
 use Doctrine\ORM\EntityManager;
 use Stoa\Core\Exception\ApplicationException;
@@ -51,7 +52,7 @@ abstract class Base
      * Retrieve a single entity.
      * @return object|null
      */
-    public function getItem($id) : ?object
+    public function getItem($id) : ?BaseModel
     {
         if (!ctype_digit($id)) {
             return null;

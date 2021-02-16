@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Stoa\Model;
 
 use DateTime;
+use Stoa\Model\BaseModel as Base;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +16,7 @@ use Doctrine\Common\Collections\Collection;
  *  @Index(name="purchase_date_idx", columns="purchase_date")
  * })
  **/
-class Order
+class Order extends Base
 {
     /**
      * @var int
